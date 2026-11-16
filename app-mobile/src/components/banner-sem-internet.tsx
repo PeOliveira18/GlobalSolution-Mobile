@@ -1,0 +1,49 @@
+import { StyleSheet, View } from 'react-native';
+
+import { Espaco } from '@/constants/theme';
+import { useConexao } from '@/contexts/conexao';
+import { useTema } from '@/contexts/tema';
+import { formatarQuando } from '@/utils/formatar';
+
+import { Icone } from './icone';
+import { Texto } from './texto';
+
+/**
+ * Faixa no topo da tela quando o celular está sem internet (C3.3).
+ * Com `dadosDe`, diz de quando são os dados guardados que estão aparecendo.
+ */
+export function BannerSemInternet({ dadosDe }: { dadosDe?: string | null }) {
+  const { online } = useConexao();
+  const { cores } = useTema();
+  if (online && !dadosDe) return null;
+
+  // Com internet mas sem resposta do servidor, a mensagem não pode culpar a internet do morador.
+  const motivo = online ? 'Servidor indisponível' : 'Sem internet';
+  const texto = dadosDe
+    ? `${motivo}: mostrando dados de ${formatarQuando(dadosDe)}.`
+    : 'Sem internet. Seus relatos ficam guardados e serão enviados quando a conexão voltar.';
+
+  return (
+    <View
+      accessible
+      role="alert"
+      accessibilityLiveRegion="assertive"
+      style={[styles.banner, { borderColor: cores.faixas.ATENCAO.cor, backgroundColor: cores.faixas.ATENCAO.fundo }]}>
+      <Icone nome={{ ios: 'wifi.slash', android: 'wifi_off', web: 'wifi_off' }} cor={cores.texto} />
+      <Texto negrito style={{ flex: 1 }}>
+        {texto}
+      </Texto>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  banner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Espaco.sm,
+    borderWidth: 2,
+    borderRadius: 12,
+    padding: Espaco.md,
+  },
+});

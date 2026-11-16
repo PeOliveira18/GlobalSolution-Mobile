@@ -1,0 +1,54 @@
+[
+  {
+    "codigo": "SNS-PANTANAL-01",
+    "tipo": "NIVEL",
+    "unidade": "CM",
+    "areaRiscoId": 1,
+    "latitude": -23.4985,
+    "longitude": -46.443,
+    "alturaInstalacaoCm": 400,
+    "limiteAtencao": 150,
+    "limiteAlerta": 220,
+    "limiteEmergencia": 300,
+    "status": "ATIVO"
+  },
+  {
+    "codigo": "SNS-ROMANO-01",
+    "tipo": "NIVEL",
+    "unidade": "CM",
+    "areaRiscoId": 2,
+    "latitude": -23.489,
+    "longitude": -46.396,
+    "alturaInstalacaoCm": 400,
+    "limiteAtencao": 150,
+    "limiteAlerta": 220,
+    "limiteEmergencia": 300,
+    "status": "ATIVO"
+  },
+  {
+    "codigo": "SNS-IPIRANGA-01",
+    "tipo": "NIVEL",
+    "unidade": "CM",
+    "areaRiscoId": 3,
+    "latitude": -23.587,
+    "longitude": -46.61,
+    "alturaInstalacaoCm": 350,
+    "limiteAtencao": 120,
+    "limiteAlerta": 180,
+    "limiteEmergencia": 250,
+    "status": "ATIVO"
+  },
+  {
+    "codigo": "CHV-PANTANAL-01",
+    "tipo": "CHUVA",
+    "unidade": "MM_H",
+    "areaRiscoId": 1,
+    "latitude": -23.4985,
+    "longitude": -46.443,
+    "alturaInstalacaoCm": null,
+    "limiteAtencao": 10,
+    "limiteAlerta": 30,
+    "limiteEmergencia": 50,
+    "status": "ATIVO"
+  }
+]

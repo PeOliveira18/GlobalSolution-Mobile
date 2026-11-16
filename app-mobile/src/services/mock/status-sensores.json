@@ -1,0 +1,30 @@
+[
+  {
+    "sensorCodigo": "SNS-PANTANAL-01",
+    "areaRiscoId": 1,
+    "nivelCm": 235.0,
+    "faixa": "ALERTA",
+    "atualizadoEm": "2026-11-15T18:42:00-03:00"
+  },
+  {
+    "sensorCodigo": "SNS-ROMANO-01",
+    "areaRiscoId": 2,
+    "nivelCm": 160.0,
+    "faixa": "ATENCAO",
+    "atualizadoEm": "2026-11-15T18:40:00-03:00"
+  },
+  {
+    "sensorCodigo": "SNS-IPIRANGA-01",
+    "areaRiscoId": 3,
+    "nivelCm": 80.0,
+    "faixa": "NORMAL",
+    "atualizadoEm": "2026-11-15T18:41:00-03:00"
+  },
+  {
+    "sensorCodigo": "CHV-PANTANAL-01",
+    "areaRiscoId": 1,
+    "nivelCm": 22.0,
+    "faixa": "ATENCAO",
+    "atualizadoEm": "2026-11-15T18:42:00-03:00"
+  }
+]

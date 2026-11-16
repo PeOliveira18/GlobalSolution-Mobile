@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "nome": "Várzea do Jardim Pantanal",
+    "bairro": "São Miguel Paulista",
+    "latitude": -23.4985,
+    "longitude": -46.443,
+    "raioMetros": 1200,
+    "nivelRiscoHistorico": 5
+  },
+  {
+    "id": 2,
+    "nome": "Jardim Romano",
+    "bairro": "Itaim Paulista",
+    "latitude": -23.489,
+    "longitude": -46.396,
+    "raioMetros": 1000,
+    "nivelRiscoHistorico": 4
+  },
+  {
+    "id": 3,
+    "nome": "Córrego Ipiranga",
+    "bairro": "Ipiranga",
+    "latitude": -23.587,
+    "longitude": -46.61,
+    "raioMetros": 800,
+    "nivelRiscoHistorico": 3
+  }
+]

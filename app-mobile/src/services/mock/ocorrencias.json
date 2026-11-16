@@ -1,0 +1,62 @@
+[
+  {
+    "id": 101,
+    "areaRiscoId": 1,
+    "tipo": "RUA_ALAGADA",
+    "descricao": "Rua tomada até o joelho perto da praça.",
+    "latitude": -23.498,
+    "longitude": -46.444,
+    "status": "CONFIRMADA",
+    "confirmacoes": 2,
+    "criadaEm": "2026-11-15T18:05:00-03:00",
+    "idLocalApp": "0f3b6c1e-6a1d-4c8e-9b7a-1d2e3f4a5b01"
+  },
+  {
+    "id": 102,
+    "areaRiscoId": 1,
+    "tipo": "CORREGO_TRANSBORDANDO",
+    "descricao": "A água do córrego já passou da mureta.",
+    "latitude": -23.499,
+    "longitude": -46.442,
+    "status": "ABERTA",
+    "confirmacoes": 1,
+    "criadaEm": "2026-11-15T18:18:00-03:00",
+    "idLocalApp": "0f3b6c1e-6a1d-4c8e-9b7a-1d2e3f4a5b02"
+  },
+  {
+    "id": 103,
+    "areaRiscoId": 1,
+    "tipo": "BUEIRO_ENTUPIDO",
+    "descricao": null,
+    "latitude": -23.497,
+    "longitude": -46.441,
+    "status": "ABERTA",
+    "confirmacoes": 0,
+    "criadaEm": "2026-11-15T18:29:00-03:00",
+    "idLocalApp": "0f3b6c1e-6a1d-4c8e-9b7a-1d2e3f4a5b03"
+  },
+  {
+    "id": 104,
+    "areaRiscoId": 2,
+    "tipo": "IMOVEL_ATINGIDO",
+    "descricao": "Água entrando nas casas da rua de baixo.",
+    "latitude": -23.489,
+    "longitude": -46.397,
+    "status": "ABERTA",
+    "confirmacoes": 1,
+    "criadaEm": "2026-11-15T18:35:00-03:00",
+    "idLocalApp": "0f3b6c1e-6a1d-4c8e-9b7a-1d2e3f4a5b04"
+  },
+  {
+    "id": 95,
+    "areaRiscoId": 3,
+    "tipo": "BUEIRO_ENTUPIDO",
+    "descricao": "Bueiro limpo pela subprefeitura.",
+    "latitude": -23.587,
+    "longitude": -46.61,
+    "status": "RESOLVIDA",
+    "confirmacoes": 3,
+    "criadaEm": "2026-11-15T08:50:00-03:00",
+    "idLocalApp": "0f3b6c1e-6a1d-4c8e-9b7a-1d2e3f4a5b05"
+  }
+]

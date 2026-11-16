@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "areaRiscoId": 1,
+    "nome": "Abrigo Escola Municipal A (simulado)",
+    "endereco": "Endereço ilustrativo, Jardim Pantanal",
+    "latitude": -23.496,
+    "longitude": -46.447,
+    "capacidade": 120,
+    "ocupacao": 45,
+    "vagasLivres": 75,
+    "acessivel": true,
+    "aceitaAnimais": true
+  },
+  {
+    "id": 2,
+    "areaRiscoId": 1,
+    "nome": "Abrigo Centro Comunitário B (simulado)",
+    "endereco": "Endereço ilustrativo, Jardim Pantanal",
+    "latitude": -23.501,
+    "longitude": -46.439,
+    "capacidade": 60,
+    "ocupacao": 60,
+    "vagasLivres": 0,
+    "acessivel": false,
+    "aceitaAnimais": false
+  },
+  {
+    "id": 3,
+    "areaRiscoId": 2,
+    "nome": "Abrigo Ginásio C (simulado)",
+    "endereco": "Endereço ilustrativo, Jardim Romano",
+    "latitude": -23.487,
+    "longitude": -46.399,
+    "capacidade": 200,
+    "ocupacao": 30,
+    "vagasLivres": 170,
+    "acessivel": true,
+    "aceitaAnimais": false
+  },
+  {
+    "id": 4,
+    "areaRiscoId": 3,
+    "nome": "Abrigo Paróquia D (simulado)",
+    "endereco": "Endereço ilustrativo, Ipiranga",
+    "latitude": -23.585,
+    "longitude": -46.608,
+    "capacidade": 80,
+    "ocupacao": 10,
+    "vagasLivres": 70,
+    "acessivel": true,
+    "aceitaAnimais": false
+  }
+]

@@ -7,7 +7,7 @@
 | Campo | Resposta |
 |---|---|
 | **Nome** | Olho d'Água |
-| **Cidade e bairro** | São Paulo — Jardim Pantanal, São Miguel Paulista (várzea do Rio Tietê) · *placeholder: trocar pelo bairro observado pela equipe* |
+| **Cidade e bairro** | São Paulo — Jardim Pantanal, em São Miguel Paulista (zona leste), na várzea do Rio Tietê. Os dados de demonstração também cobrem o Jardim Romano e a região do Córrego Ipiranga |
 | **Cidadão beneficiado** | Morador de área de risco de alagamento — em especial idosos, pessoas com mobilidade reduzida e famílias que moram perto de córregos |
 | **Problema, em uma frase** | Quem mora perto de córregos em São Paulo só descobre que a rua vai alagar quando a água já está entrando em casa, sem tempo para proteger pessoas, documentos e bens. |
 | **Como funciona** | Sensores de baixo custo medem o nível do córrego e a chuva; quando o nível cruza um limite, o morador inscrito naquela área recebe um alerta no celular com o que fazer e o abrigo mais próximo. Os próprios moradores também reportam alagamentos pelo app, e relatos confirmados viram alerta comunitário. |
@@ -46,8 +46,31 @@ GlobalSolution-Mobile/
 ├── README.md     ← esta Ficha
 ├── PLANO.md      ← cópia do plano mestre (oficial no repositório Olho-dagua)
 ├── prompts.md    ← registro do uso de IA
-└── app-mobile/   ← código do app (instruções, prints e vídeo no README da pasta)
+└── app-mobile/   ← código do app (instruções completas, todos os prints e o roteiro do vídeo no README da pasta)
 ```
+
+**🎬 Vídeo do app rodando (até 3 min):** *a definir*
+
+<table>
+  <tr>
+    <td align="center"><img src="app-mobile/docs/prints/02-inicio.jpg" width="180" alt="Início: nível do córrego em ALERTA, 2,35 m"><br><b>Vai alagar?</b><br>Início</td>
+    <td align="center"><img src="app-mobile/docs/prints/03-detalhe-alerta.jpg" width="180" alt="Detalhe do alerta com o passo a passo"><br><b>O que eu faço?</b><br>Detalhe do alerta</td>
+    <td align="center"><img src="app-mobile/docs/prints/05-abrigos.jpg" width="180" alt="Abrigos com vaga por distância"><br><b>Para onde eu vou?</b><br>Abrigos</td>
+    <td align="center"><img src="app-mobile/docs/prints/08-relato-offline-pendente.jpg" width="180" alt="Relato feito sem internet, pendente"><br><b>Como aviso os vizinhos?</b><br>Reportar (até sem internet)</td>
+  </tr>
+</table>
+
+**Destaques:** Expo Router com onboarding, 4 abas e telas de detalhe · consumo das APIs reais do C# e do Java, ou mock com os mesmos contratos · SQLite com fila offline que envia sozinha quando a internet volta · acessibilidade auditada (leitor de tela, alvos de 48 dp, contraste AA, letra grande e alto contraste).
+
+**Rodar rápido (modo mock, sem backend):**
+
+```bash
+cd app-mobile
+npm install
+npx expo start
+```
+
+Leia o QR code com o **Expo Go** (SDK 58). Para ligar nas APIs reais, veja [app-mobile/README.md](app-mobile/README.md#modo-mock--api-real).
 <!-- ESTE-REPO:FIM -->
 
 ## Repositórios do projeto
@@ -75,4 +98,8 @@ O planejamento completo (contratos entre serviços, portas, dados de seed, o que
 
 ## Integrantes
 
-*a preencher*
+| Nome | RM |
+|---|---|
+| Pedro Oliveira | 99943 |
+| Debora Ivanowski | 555694 |
+| Diego Cabral | 557817 |
