@@ -31,7 +31,7 @@ App em Expo (React Native + TypeScript + Expo Router) da disciplina **Mobile Dev
   </tr>
 </table>
 
-Prints tirados no modo mock (dados simulados), em tela de celular de 375 × 812.
+Prints tirados no modo mock (dados simulados), no Simulador de iOS (iPhone 17 Pro).
 
 ## Como rodar
 

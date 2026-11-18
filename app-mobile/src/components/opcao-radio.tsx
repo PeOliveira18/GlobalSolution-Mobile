@@ -1,7 +1,7 @@
 import type { SymbolViewProps } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { ALVO_TOQUE_MINIMO, Espaco } from '@/constants/theme';
+import { ALVO_TOQUE_MINIMO, Espaco, Raio } from '@/constants/theme';
 import { useTema } from '@/contexts/tema';
 
 import { Icone } from './icone';
@@ -14,14 +14,18 @@ type OpcaoRadioProps = {
   selecionada: boolean;
   aoSelecionar: () => void;
   icone?: SymbolViewProps['name'];
+  /** Linha dentro de um `Grupo` (estilo Ajustes): sem borda nem sombra próprias. */
+  agrupada?: boolean;
 };
 
 /**
  * Uma opção de uma lista de escolha única (área, tipo de relato...).
- * A selecionada fica com borda grossa e um ✓, além da cor (nunca só a cor).
+ * A selecionada fica com borda grossa, fundo de destaque e a marca preenchida com ✓,
+ * além da cor (nunca só a cor).
  */
-export function OpcaoRadio({ rotulo, descricao, dica, selecionada, aoSelecionar, icone }: OpcaoRadioProps) {
+export function OpcaoRadio({ rotulo, descricao, dica, selecionada, aoSelecionar, icone, agrupada }: OpcaoRadioProps) {
   const { cores, tamanho } = useTema();
+  const tamanhoIcone = tamanho(26);
 
   return (
     <Pressable
@@ -32,14 +36,30 @@ export function OpcaoRadio({ rotulo, descricao, dica, selecionada, aoSelecionar,
       accessibilityHint={dica}
       style={({ pressed }) => [
         styles.opcao,
-        {
-          borderColor: selecionada ? cores.primaria : cores.borda,
-          borderWidth: selecionada ? 3 : 1,
-          backgroundColor: selecionada ? cores.primariaSuave : cores.superficie,
-          opacity: pressed ? 0.8 : 1,
-        },
+        agrupada
+          ? // No grupo, a escolhida fica com fundo de destaque e a marca ✓ (a borda é do cartão do grupo).
+            { borderRadius: 0, backgroundColor: selecionada || pressed ? cores.primariaSuave : 'transparent' }
+          : {
+              borderColor: selecionada ? cores.primaria : cores.bordaSuave,
+              borderWidth: selecionada ? 3 : 1,
+              backgroundColor: selecionada ? cores.primariaSuave : cores.superficie,
+              boxShadow: selecionada ? undefined : (cores.sombra ?? undefined),
+              opacity: pressed ? 0.85 : 1,
+            },
       ]}>
-      {icone ? <Icone nome={icone} cor={selecionada ? cores.primaria : cores.texto} tamanho={tamanho(30)} /> : null}
+      {icone ? (
+        <View
+          style={[
+            styles.quadroIcone,
+            {
+              width: tamanhoIcone + Espaco.md,
+              height: tamanhoIcone + Espaco.md,
+              backgroundColor: selecionada ? cores.primaria : cores.primariaSuave,
+            },
+          ]}>
+          <Icone nome={icone} cor={selecionada ? cores.sobrePrimaria : cores.primaria} tamanho={tamanhoIcone} />
+        </View>
+      ) : null}
       <View style={styles.textos}>
         <Texto negrito>{rotulo}</Texto>
         {descricao ? (
@@ -48,9 +68,15 @@ export function OpcaoRadio({ rotulo, descricao, dica, selecionada, aoSelecionar,
           </Texto>
         ) : null}
       </View>
-      <View style={[styles.marca, { borderColor: selecionada ? cores.primaria : cores.borda }]}>
+      <View
+        style={[
+          styles.marca,
+          selecionada
+            ? { borderColor: cores.primaria, backgroundColor: cores.primaria }
+            : { borderColor: cores.borda, backgroundColor: cores.superficie },
+        ]}>
         {selecionada ? (
-          <Icone nome={{ ios: 'checkmark', android: 'check', web: 'check' }} cor={cores.primaria} tamanho={20} />
+          <Icone nome={{ ios: 'checkmark', android: 'check', web: 'check' }} cor={cores.sobrePrimaria} tamanho={16} />
         ) : null}
       </View>
     </Pressable>
@@ -64,12 +90,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Espaco.md,
     paddingHorizontal: Espaco.md,
-    paddingVertical: Espaco.sm,
-    borderRadius: 12,
+    paddingVertical: Espaco.sm + 2,
+    borderRadius: Raio.lg,
+  },
+  quadroIcone: {
+    borderRadius: Raio.sm + 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textos: {
     flex: 1,
-    gap: Espaco.xs,
+    gap: 2,
   },
   marca: {
     width: 28,

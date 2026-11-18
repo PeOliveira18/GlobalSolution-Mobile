@@ -4,10 +4,9 @@ import { useCallback, useEffect, useRef } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
 
 import { Botao } from '@/components/botao';
-import { Cartao } from '@/components/cartao';
 import { CartaoAlerta } from '@/components/cartao-alerta';
 import { CartaoNivel } from '@/components/cartao-nivel';
-import { Carregando, ErroCarregar } from '@/components/estados';
+import { Carregando, ErroCarregar, EstadoVazio } from '@/components/estados';
 import { Tela } from '@/components/tela';
 import { Texto } from '@/components/texto';
 import { Espaco } from '@/constants/theme';
@@ -110,9 +109,10 @@ export default function InicioScreen() {
       ) : nivel.dados.status ? (
         <CartaoNivel nomeArea={nivel.dados.area.nome} status={nivel.dados.status} />
       ) : (
-        <Cartao>
-          <Texto>A área {nivel.dados.area.nome} ainda não tem sensor de nível.</Texto>
-        </Cartao>
+        <EstadoVazio
+          icone={{ ios: 'antenna.radiowaves.left.and.right.slash', android: 'sensors_off', web: 'sensors_off' }}
+          texto={`A área ${nivel.dados.area.nome} ainda não tem sensor de nível.`}
+        />
       )}
 
       <Botao
@@ -134,9 +134,11 @@ export default function InicioScreen() {
         ) : alertas?.dados?.length ? (
           alertas.dados.map((alerta) => <CartaoAlerta key={alerta.id} alerta={alerta} />)
         ) : (
-          <Cartao>
-            <Texto>Nenhum alerta na sua área agora.</Texto>
-          </Cartao>
+          <EstadoVazio
+            positivo
+            icone={{ ios: 'checkmark.shield.fill', android: 'verified_user', web: 'verified_user' }}
+            texto="Nenhum alerta na sua área agora."
+          />
         )}
       </View>
     </Tela>

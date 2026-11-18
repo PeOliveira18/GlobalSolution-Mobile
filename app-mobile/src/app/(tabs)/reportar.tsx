@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { AccessibilityInfo, View } from 'react-native';
+import { AccessibilityInfo, StyleSheet, View } from 'react-native';
 
 import { Botao } from '@/components/botao';
 import { CampoTexto } from '@/components/campo-texto';
 import { Cartao } from '@/components/cartao';
-import { CartaoRelato } from '@/components/cartao-relato';
-import { Aviso, Carregando, ErroCarregar } from '@/components/estados';
+import { CartaoRelato, type TomSituacao } from '@/components/cartao-relato';
+import { Aviso, Carregando, ErroCarregar, EstadoVazio } from '@/components/estados';
+import { QuadradoIcone } from '@/components/grupo';
 import { OpcaoRadio } from '@/components/opcao-radio';
 import { SeletorArea } from '@/components/seletor-area';
 import { Tela } from '@/components/tela';
@@ -14,7 +15,6 @@ import { STATUS_OCORRENCIA, TIPOS_OCORRENCIA } from '@/constants/rotulos';
 import { Espaco } from '@/constants/theme';
 import { useConexao } from '@/contexts/conexao';
 import { useMorador, type RelatoLocal } from '@/contexts/morador';
-import { useTema } from '@/contexts/tema';
 import { useAreas } from '@/hooks/use-areas';
 import { useCarregar } from '@/hooks/use-carregar';
 import { api, mensagemParaMorador } from '@/services/api';
@@ -29,7 +29,6 @@ type Retorno = { tipo: 'sucesso' | 'info' | 'erro'; texto: string };
 
 /** REPORTAR (C3.3): "Como eu aviso os vizinhos?" */
 export default function ReportarScreen() {
-  const { cores } = useTema();
   const { online } = useConexao();
   const { areaId, relatos, registrarRelato, sincronizar, confirmados, marcarConfirmado } = useMorador();
 
@@ -137,7 +136,12 @@ export default function ReportarScreen() {
       />
 
       <Cartao>
-        <Texto negrito>Onde?</Texto>
+        <View style={styles.onde}>
+          <QuadradoIcone icone={{ ios: 'mappin.and.ellipse', android: 'location_on', web: 'location_on' }} />
+          <Texto negrito style={{ flex: 1 }}>
+            Onde?
+          </Texto>
+        </View>
         <Texto accessibilityLiveRegion="polite">{descreverLocal(area, gps)}</Texto>
         <Botao
           rotulo={trocandoArea ? 'Fechar a lista de áreas' : 'Relatar em outra área'}
@@ -180,9 +184,10 @@ export default function ReportarScreen() {
 
       <Texto variante="subtitulo">Meus relatos</Texto>
       {relatos.length === 0 ? (
-        <Cartao>
-          <Texto>Você ainda não fez nenhum relato.</Texto>
-        </Cartao>
+        <EstadoVazio
+          icone={{ ios: 'text.bubble', android: 'chat_bubble', web: 'chat_bubble' }}
+          texto="Você ainda não fez nenhum relato."
+        />
       ) : (
         relatos.map((r) => {
           const situacao = situacaoDoMeuRelato(r, doServidor.get(r.idLocal));
@@ -193,7 +198,7 @@ export default function ReportarScreen() {
               descricao={r.descricao}
               criadoEm={r.criadoEm}
               situacao={situacao.texto}
-              corSituacao={situacao.erro ? cores.perigo : undefined}
+              tom={situacao.tom}
             />
           );
         })
@@ -205,9 +210,10 @@ export default function ReportarScreen() {
       ) : vizinhos.erro ? (
         <ErroCarregar mensagem={vizinhos.erro} aoTentarDeNovo={vizinhos.recarregar} />
       ) : deOutros.length === 0 ? (
-        <Cartao>
-          <Texto>Nenhum relato de vizinhos na sua área agora.</Texto>
-        </Cartao>
+        <EstadoVazio
+          icone={{ ios: 'person.2', android: 'group', web: 'group' }}
+          texto="Nenhum relato de vizinhos na sua área agora."
+        />
       ) : (
         deOutros.map((o) => {
           const jaConfirmei = confirmados.includes(o.id);
@@ -217,7 +223,8 @@ export default function ReportarScreen() {
               tipo={o.tipo}
               descricao={o.descricao}
               criadoEm={o.criadaEm}
-              situacao={`${STATUS_OCORRENCIA[o.status]} · ${o.confirmacoes} confirmação(ões)`}>
+              situacao={`${STATUS_OCORRENCIA[o.status]} · ${o.confirmacoes} confirmação(ões)`}
+              tom={o.status === 'CONFIRMADA' ? 'sucesso' : 'neutro'}>
               <Botao
                 rotulo={jaConfirmei ? 'Você já confirmou' : 'Confirmar'}
                 dica="Confirma que você também está vendo este alagamento"
@@ -253,10 +260,18 @@ function descreverLocal(area: Area | undefined, gps: Coordenadas | null | 'busca
   return `Centro da área ${area.nome} (sua localização não está disponível ou fica fora desta área).`;
 }
 
-function situacaoDoMeuRelato(relato: RelatoLocal, noServidor?: Ocorrencia): { texto: string; erro?: boolean } {
-  if (relato.statusSync === 'PENDENTE') return { texto: 'Pendente: será enviado quando a internet voltar' };
-  if (relato.statusSync === 'ERRO') return { texto: 'Não foi enviado', erro: true };
-  if (noServidor?.status === 'CONFIRMADA') return { texto: 'Enviado · Confirmado pelos vizinhos' };
-  if (noServidor?.status === 'RESOLVIDA') return { texto: 'Enviado · Resolvido' };
-  return { texto: 'Enviado' };
+function situacaoDoMeuRelato(relato: RelatoLocal, noServidor?: Ocorrencia): { texto: string; tom: TomSituacao } {
+  if (relato.statusSync === 'PENDENTE') return { texto: 'Pendente: será enviado quando a internet voltar', tom: 'pendente' };
+  if (relato.statusSync === 'ERRO') return { texto: 'Não foi enviado', tom: 'erro' };
+  if (noServidor?.status === 'CONFIRMADA') return { texto: 'Enviado · Confirmado pelos vizinhos', tom: 'sucesso' };
+  if (noServidor?.status === 'RESOLVIDA') return { texto: 'Enviado · Resolvido', tom: 'sucesso' };
+  return { texto: 'Enviado', tom: 'sucesso' };
 }
+
+const styles = StyleSheet.create({
+  onde: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Espaco.sm + 2,
+  },
+});

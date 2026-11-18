@@ -33,17 +33,20 @@ function NavegacaoRaiz() {
       <Stack
         screenOptions={{
           headerStyle: { backgroundColor: cores.fundo },
+          // Cabeçalho da mesma cor da tela, sem a linha embaixo (estilo iOS).
+          headerShadowVisible: false,
           headerTintColor: cores.primaria,
           headerTitleStyle: { color: cores.texto, fontWeight: '700' },
           headerBackTitle: 'Voltar',
           contentStyle: { backgroundColor: cores.fundo },
         }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        {/* Sem botão de voltar: a escolha da área é obrigatória na 1ª abertura. */}
+        {/* Sem cabeçalho nem voltar: a escolha da área é obrigatória na 1ª abertura. "Boas-vindas" aparece na tela. */}
         <Stack.Screen
           name="onboarding"
           options={{
             title: 'Boas-vindas',
+            headerShown: false,
             headerBackVisible: false,
             headerLeft: () => null,
             gestureEnabled: false,

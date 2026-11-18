@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-import { Espaco } from '@/constants/theme';
+import { Espaco, Raio } from '@/constants/theme';
 import { useConexao } from '@/contexts/conexao';
 import { useTema } from '@/contexts/tema';
 import { formatarQuando } from '@/utils/formatar';
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Espaco.sm,
     borderWidth: 2,
-    borderRadius: 12,
+    borderRadius: Raio.lg,
     padding: Espaco.md,
   },
 });

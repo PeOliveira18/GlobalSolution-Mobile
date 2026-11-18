@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, View } from 'react-native';
 
-import { ALVO_TOQUE_MINIMO, Espaco, Fonte } from '@/constants/theme';
+import { ALVO_TOQUE_MINIMO, Espaco, Fonte, Raio } from '@/constants/theme';
 import { useTema } from '@/contexts/tema';
 
 import { Texto } from './texto';
@@ -41,7 +41,7 @@ export function CampoTexto({ rotulo, dica, valor, aoMudar, limite, placeholder }
           styles.campo,
           {
             color: cores.texto,
-            backgroundColor: cores.fundo,
+            backgroundColor: cores.superficie,
             borderColor: corBorda,
             borderWidth: passou ? 3 : 1,
             fontSize: tamanho(Fonte.corpo),
@@ -67,7 +67,7 @@ export function CampoTexto({ rotulo, dica, valor, aoMudar, limite, placeholder }
 const styles = StyleSheet.create({
   campo: {
     minHeight: ALVO_TOQUE_MINIMO * 2,
-    borderRadius: 12,
+    borderRadius: Raio.md,
     padding: Espaco.md,
     textAlignVertical: 'top',
   },

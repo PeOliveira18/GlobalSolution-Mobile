@@ -1,6 +1,7 @@
+import type { SymbolViewProps } from 'expo-symbols';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-import { Espaco } from '@/constants/theme';
+import { Espaco, Raio } from '@/constants/theme';
 import { useTema } from '@/contexts/tema';
 
 import { Botao } from './botao';
@@ -23,7 +24,7 @@ export function Carregando({ texto = 'Carregando…' }: { texto?: string }) {
 export function ErroCarregar({ mensagem, aoTentarDeNovo }: { mensagem: string; aoTentarDeNovo?: () => void }) {
   const { cores } = useTema();
   return (
-    <Cartao style={{ borderColor: cores.perigo }}>
+    <Cartao style={{ borderColor: cores.perigo, borderWidth: 2 }}>
       <View style={styles.linha} accessible accessibilityLiveRegion="polite">
         <Icone nome={{ ios: 'wifi.exclamationmark', android: 'error', web: 'error' }} cor={cores.perigo} />
         <Texto style={{ flex: 1 }}>{mensagem}</Texto>
@@ -37,6 +38,43 @@ export function ErroCarregar({ mensagem, aoTentarDeNovo }: { mensagem: string; a
           aoPressionar={aoTentarDeNovo}
         />
       ) : null}
+    </Cartao>
+  );
+}
+
+/**
+ * Lista vazia (ex.: "Nenhum alerta na sua área agora."): ícone num círculo + o texto, centralizados.
+ * `positivo` usa o verde da faixa Normal, para quando "vazio" é uma boa notícia.
+ */
+export function EstadoVazio({
+  texto,
+  icone,
+  positivo,
+}: {
+  texto: string;
+  icone: SymbolViewProps['name'];
+  positivo?: boolean;
+}) {
+  const { cores, tamanho, preferencias } = useTema();
+  const cor = positivo ? cores.faixas.NORMAL.cor : cores.primaria;
+  const fundo = positivo ? cores.faixas.NORMAL.fundo : cores.primariaSuave;
+  const tamanhoIcone = tamanho(26);
+
+  return (
+    <Cartao style={styles.vazio}>
+      <View
+        style={[
+          styles.circulo,
+          {
+            backgroundColor: fundo,
+            borderColor: preferencias.altoContraste ? cor : fundo,
+            width: tamanhoIcone + 26,
+            height: tamanhoIcone + 26,
+          },
+        ]}>
+        <Icone nome={icone} cor={cor} tamanho={tamanhoIcone} />
+      </View>
+      <Texto style={{ textAlign: 'center' }}>{texto}</Texto>
     </Cartao>
   );
 }
@@ -70,12 +108,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Espaco.sm,
   },
+  vazio: {
+    alignItems: 'center',
+    paddingVertical: Espaco.lg,
+    gap: Espaco.sm + 2,
+  },
+  circulo: {
+    borderRadius: Raio.pilula,
+    // A borda só fica visível no alto contraste (lá o fundo do círculo é escuro como o cartão).
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   aviso: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: Espaco.sm,
     borderWidth: 2,
-    borderRadius: 12,
+    borderRadius: Raio.lg,
     padding: Espaco.md,
   },
 });

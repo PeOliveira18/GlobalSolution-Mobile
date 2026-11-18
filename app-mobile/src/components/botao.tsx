@@ -1,7 +1,7 @@
 import type { SymbolViewProps } from 'expo-symbols';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 
-import { ALVO_TOQUE_MINIMO, Espaco, Fonte } from '@/constants/theme';
+import { ALVO_TOQUE_MINIMO, Espaco, Fonte, Raio } from '@/constants/theme';
 import { useTema } from '@/contexts/tema';
 
 import { Icone } from './icone';
@@ -34,9 +34,11 @@ export function Botao({
   const { cores, tamanho } = useTema();
   const inativo = desabilitado || carregando;
 
-  const fundo = variante === 'primario' ? cores.primaria : variante === 'perigo' ? cores.perigo : cores.fundo;
+  const fundo =
+    variante === 'primario' ? cores.primaria : variante === 'perigo' ? cores.perigo : cores.secundarioFundo;
   const corTexto = variante === 'secundario' ? cores.primaria : cores.sobrePrimaria;
-  const borda = variante === 'secundario' ? cores.primaria : fundo;
+  // No alto contraste o secundário é preto com borda amarela; na paleta padrão, azul-claro sem borda visível.
+  const borda = variante === 'secundario' ? cores.secundarioBorda : fundo;
 
   return (
     <Pressable
@@ -52,7 +54,7 @@ export function Botao({
           minHeight: grande ? ALVO_TOQUE_MINIMO + Espaco.lg : ALVO_TOQUE_MINIMO + Espaco.sm,
           backgroundColor: fundo,
           borderColor: borda,
-          opacity: inativo ? 0.5 : pressed ? 0.8 : 1,
+          opacity: inativo ? 0.5 : pressed ? 0.85 : 1,
         },
       ]}>
       <View style={styles.conteudo}>
@@ -79,7 +81,7 @@ export function Botao({
 const styles = StyleSheet.create({
   botao: {
     borderWidth: 2,
-    borderRadius: 12,
+    borderRadius: Raio.md,
     paddingHorizontal: Espaco.md,
     paddingVertical: Espaco.sm,
     justifyContent: 'center',

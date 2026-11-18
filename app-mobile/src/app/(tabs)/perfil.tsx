@@ -1,22 +1,22 @@
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Botao } from '@/components/botao';
-import { Cartao } from '@/components/cartao';
 import { Aviso } from '@/components/estados';
+import { Grupo, LinhaAcao, TituloGrupo } from '@/components/grupo';
 import { LinhaInterruptor } from '@/components/linha-interruptor';
 import { SeletorArea } from '@/components/seletor-area';
 import { Tela } from '@/components/tela';
 import { Texto } from '@/components/texto';
-import { Espaco } from '@/constants/theme';
+import { Espaco, Fonte, Raio } from '@/constants/theme';
 import { useMorador } from '@/contexts/morador';
 import { useTema } from '@/contexts/tema';
 import { confirmar } from '@/utils/confirmar';
 
-/** PERFIL (C3.3): trocar de área, letra grande, alto contraste, sobre o projeto e limpar dados. */
+/** PERFIL (C3.3): trocar de área, letra grande, alto contraste, sobre o projeto e limpar dados. Seções agrupadas, como nos Ajustes do iPhone. */
 export default function PerfilScreen() {
-  const { preferencias, definirFonteGrande, definirAltoContraste } = useTema();
+  const { cores, tamanho, preferencias, definirFonteGrande, definirAltoContraste } = useTema();
   const { areaId, inscrever, limparDados } = useMorador();
   const [aviso, setAviso] = useState<string | null>(null);
 
@@ -49,51 +49,119 @@ export default function PerfilScreen() {
 
   return (
     <Tela>
-      <Texto variante="subtitulo">Sua área</Texto>
-      <SeletorArea selecionada={areaId} aoSelecionar={trocarArea} rotuloGrupo="Trocar de área" />
+      <View style={styles.secao}>
+        <TituloGrupo texto="Sua área" />
+        <SeletorArea agrupado selecionada={areaId} aoSelecionar={trocarArea} rotuloGrupo="Trocar de área" />
+      </View>
       {aviso ? <Aviso tipo="sucesso" texto={aviso} /> : null}
 
-      <Texto variante="subtitulo">Leitura</Texto>
-      <LinhaInterruptor
-        rotulo="Letra grande"
-        descricao="Aumenta todos os textos do app."
-        dica="Toque duas vezes para ligar ou desligar a letra grande"
-        ligado={preferencias.fonteGrande}
-        aoMudar={mudarFonte}
-      />
-      <LinhaInterruptor
-        rotulo="Alto contraste"
-        descricao="Fundo preto e texto branco, mais fácil de ler."
-        dica="Toque duas vezes para ligar ou desligar o alto contraste"
-        ligado={preferencias.altoContraste}
-        aoMudar={mudarContraste}
-      />
+      <Grupo titulo="Leitura">
+        <LinhaInterruptor
+          agrupada
+          rotulo="Letra grande"
+          descricao="Aumenta todos os textos do app."
+          dica="Toque duas vezes para ligar ou desligar a letra grande"
+          ligado={preferencias.fonteGrande}
+          aoMudar={mudarFonte}
+        />
+        <LinhaInterruptor
+          agrupada
+          rotulo="Alto contraste"
+          descricao="Fundo preto e texto branco, mais fácil de ler."
+          dica="Toque duas vezes para ligar ou desligar o alto contraste"
+          ligado={preferencias.altoContraste}
+          aoMudar={mudarContraste}
+        />
+      </Grupo>
 
-      <Texto variante="subtitulo">Sobre o projeto</Texto>
-      <Cartao>
-        <Texto>
-          O Olho d&apos;Água avisa os moradores de áreas de risco quando o córrego começa a subir, mostra o que
-          fazer e para onde ir. Sensores medem o nível da água e os próprios vizinhos também avisam pelo app.
-        </Texto>
-        <View style={{ gap: Espaco.xs }}>
-          <Texto negrito>Objetivos de Desenvolvimento Sustentável (ONU)</Texto>
-          <Texto>• ODS 11: cidades mais seguras, com menos perdas em desastres (meta 11.5).</Texto>
-          <Texto>• ODS 13: mais preparo para enfrentar chuvas e enchentes (meta 13.1).</Texto>
-          <Texto>• ODS 10: menos desigualdade, porque quem mora na várzea é quem mais sofre.</Texto>
+      <Grupo titulo="Sobre o projeto">
+        <View style={styles.linha}>
+          {/* Decorativa: o nome do app vem logo ao lado, em texto. */}
+          <Image
+            source={require('@/assets/images/icon.png')}
+            style={[styles.iconeApp, preferencias.altoContraste && { borderWidth: 2, borderColor: cores.borda }]}
+            accessible={false}
+          />
+          <Texto variante="subtitulo" accessibilityRole="none" style={{ flex: 1 }}>
+            Olho d&apos;Água
+          </Texto>
         </View>
-        <Texto variante="legenda" tom="secundario">
-          Projeto acadêmico da Global Solution FIAP 2026.2. Áreas, abrigos e alertas são simulados.
-        </Texto>
-      </Cartao>
+        <View style={styles.linha}>
+          <Texto style={{ flex: 1 }}>
+            O Olho d&apos;Água avisa os moradores de áreas de risco quando o córrego começa a subir, mostra o que
+            fazer e para onde ir. Sensores medem o nível da água e os próprios vizinhos também avisam pelo app.
+          </Texto>
+        </View>
+      </Grupo>
 
-      <Texto variante="subtitulo">Dados do celular</Texto>
-      <Botao
-        rotulo="Limpar dados locais"
-        dica="Apaga a área, as preferências e os relatos guardados neste celular"
-        variante="perigo"
-        icone={{ ios: 'trash.fill', android: 'delete', web: 'delete' }}
-        aoPressionar={limpar}
-      />
+      <Grupo
+        titulo="Objetivos de Desenvolvimento Sustentável (ONU)"
+        rodape="Projeto acadêmico da Global Solution FIAP 2026.2. Áreas, abrigos e alertas são simulados.">
+        {ODS.map((ods) => (
+          <View key={ods.numero} accessible accessibilityLabel={`ODS ${ods.numero}: ${ods.texto}`} style={styles.linha}>
+            <View
+              style={[
+                styles.selo,
+                {
+                  minWidth: tamanho(Fonte.corpo) + 26,
+                  backgroundColor: cores.primariaSuave,
+                  borderColor: preferencias.altoContraste ? cores.primaria : cores.primariaSuave,
+                },
+              ]}>
+              <Texto variante="legenda" negrito style={{ color: cores.primaria, lineHeight: Math.round(tamanho(Fonte.legenda) * 1.1) }}>
+                ODS
+              </Texto>
+              <Texto negrito style={{ color: cores.primaria, lineHeight: Math.round(tamanho(Fonte.corpo) * 1.15) }}>
+                {ods.numero}
+              </Texto>
+            </View>
+            <Texto style={{ flex: 1 }}>{ods.texto.charAt(0).toUpperCase() + ods.texto.slice(1)}</Texto>
+          </View>
+        ))}
+      </Grupo>
+
+      <Grupo titulo="Dados do celular">
+        <LinhaAcao
+          perigo
+          rotulo="Limpar dados locais"
+          dica="Apaga a área, as preferências e os relatos guardados neste celular"
+          icone={{ ios: 'trash.fill', android: 'delete', web: 'delete' }}
+          aoPressionar={limpar}
+        />
+      </Grupo>
     </Tela>
   );
 }
+
+/** Os ODS que o projeto atende, com o mesmo texto de antes. */
+const ODS = [
+  { numero: 11, texto: 'cidades mais seguras, com menos perdas em desastres (meta 11.5).' },
+  { numero: 13, texto: 'mais preparo para enfrentar chuvas e enchentes (meta 13.1).' },
+  { numero: 10, texto: 'menos desigualdade, porque quem mora na várzea é quem mais sofre.' },
+];
+
+const styles = StyleSheet.create({
+  secao: {
+    gap: Espaco.sm,
+  },
+  linha: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Espaco.sm + 4,
+    paddingHorizontal: Espaco.md,
+    paddingVertical: Espaco.sm + 4,
+  },
+  iconeApp: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+  },
+  selo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: Espaco.xs,
+    paddingVertical: Espaco.xs,
+    borderRadius: Raio.sm,
+    borderWidth: 1.5,
+  },
+});
