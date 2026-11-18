@@ -77,17 +77,6 @@ Leia o QR code com o **Expo Go** (SDK 58). Para ligar nas APIs reais, veja [app-
 | Serviço de Telemetria (Java) | SOA e Web Services | https://github.com/PeOliveira18/GlobalSolution-SOA |
 | App do morador (Expo) | Mobile Development & IOT | https://github.com/PeOliveira18/GlobalSolution-Mobile |
 
-## Links das entregas
-
-| Disciplina | Link |
-|---|---|
-| Vídeo do app (Mobile) | [app-mobile/docs/video-app.mp4](app-mobile/docs/video-app.mp4) |
-| Projeto Wokwi (IoT) | *a definir* |
-| Vídeo IoT | *a definir* |
-| Vídeo ML | *a definir* |
-| Vídeo Linux (OS) | *a definir* |
-| Pitch (Testing) | *a definir* |
-
 ## Integrantes
 
 | Nome | RM |
