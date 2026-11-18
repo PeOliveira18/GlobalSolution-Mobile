@@ -1,7 +1,7 @@
 import type { ProblemDetails } from '@/types';
 
-import { TIMEOUT_MS } from './config';
-import { ErroApi } from './erros';
+import { TIMEOUT_MS } from '@/services/config';
+import { ErroApi } from '@/services/erros';
 
 type Metodo = 'GET' | 'POST' | 'PATCH';
 

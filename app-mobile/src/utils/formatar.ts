@@ -1,4 +1,4 @@
-import { lerData } from './datas';
+import { lerData } from '@/utils/datas';
 
 export function formatarMetros(centimetros: number): string {
   return `${(centimetros / 100).toFixed(2).replace('.', ',')} m`;

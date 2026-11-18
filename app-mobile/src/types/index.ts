@@ -1,5 +1,5 @@
-export type * from './cidadao';
-export type * from './telemetria';
+export type * from '@/types/cidadao';
+export type * from '@/types/telemetria';
 
 export type ProblemDetails = {
   type?: string;

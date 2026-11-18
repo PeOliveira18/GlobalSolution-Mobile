@@ -1,4 +1,4 @@
-import type { Faixa } from './telemetria';
+import type { Faixa } from '@/types/telemetria';
 
 export type Severidade = 'BAIXA' | 'MEDIA' | 'ALTA' | 'CRITICA';
 

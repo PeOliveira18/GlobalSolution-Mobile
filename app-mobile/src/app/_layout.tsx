@@ -2,11 +2,11 @@ import { Stack } from 'expo-router';
 import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 
-import { BotaoVoltar } from '@/components/botao-voltar';
-import { ProvedorConexao } from '@/contexts/conexao';
-import { ProvedorDadosLocais } from '@/contexts/dados-locais';
-import { useTema } from '@/contexts/tema';
-import { inicializarBanco, NOME_BANCO } from '@/db/esquema';
+import { BotaoVoltar } from '@/components/BotaoVoltar';
+import { ProvedorConexao } from '@/contexts/ConexaoContext';
+import { ProvedorDadosLocais } from '@/contexts/DadosLocaisContext';
+import { useTema } from '@/contexts/TemaContext';
+import { inicializarBanco, NOME_BANCO } from '@/services/databaseService';
 
 export default function RootLayout() {
   return (

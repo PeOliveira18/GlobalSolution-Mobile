@@ -84,31 +84,34 @@ Para usar os serviços de verdade, copie `.env.example` para `.env`, ajuste e re
 - erros de validação (400) mostram a mensagem do servidor em linguagem simples;
 - se só um dos serviços cair, o outro continua aparecendo.
 
-As telas sempre chamam `api` (em `src/services/api.ts`). A implementação real (`api-real.ts`) e a mock (`mock/api-mock.ts`) seguem a mesma interface (`contrato.ts`), então trocar a flag não muda nada nas telas.
+As telas sempre chamam `api` (em `src/services/api.ts`). A implementação real (`apiReal.ts`) e a mock (`mock/apiMock.ts`) seguem a mesma interface (`contrato.ts`), então trocar a flag não muda nada nas telas.
 
-## Estrutura das telas
+## Estrutura do projeto
 
 ```
-src/app/
-├── _layout.tsx          ← layout raiz (Stack)
-├── onboarding.tsx       ← 1ª abertura: área + preferências de acessibilidade
-├── (tabs)/
-│   ├── _layout.tsx      ← 4 abas com ícone + texto
-│   ├── index.tsx        ← Início
-│   ├── reportar.tsx     ← Reportar
-│   ├── abrigos.tsx      ← Abrigos
-│   └── perfil.tsx       ← Perfil
-├── alerta/[id].tsx      ← detalhe do alerta
-└── abrigo/[id].tsx      ← detalhe do abrigo
-
 src/
-├── types/               ← tipos espelhando os contratos das APIs do Cidadão e da Telemetria
-├── services/            ← api.ts (ponto único), api-real.ts, http.ts, mock/, localização, envio de relatos
-├── contexts/            ← tema.tsx (letra grande, alto contraste) e morador.tsx (área, dispositivo, relatos)
-├── constants/           ← paletas e faixas, rótulos dos contratos, passo a passo dos alertas
-├── hooks/               ← carregar dados da API, ponto de partida para os abrigos
-├── components/          ← Botao, Cartao, OpcaoRadio, CartaoNivel, CartaoAlerta, CampoTexto...
-└── utils/               ← distância (Haversine), datas, formatação e confirmação
+├── app/                     ← rotas do Expo Router (só apontam para as telas em screens/)
+│   ├── _layout.tsx          ← layout raiz (Stack) e provedores
+│   ├── onboarding.tsx
+│   ├── (tabs)/              ← _layout.tsx com as 4 abas + index, reportar, abrigos, perfil
+│   ├── alerta/[id].tsx
+│   └── abrigo/[id].tsx
+├── screens/                 ← telas
+│   ├── onboarding/OnboardingScreen.tsx
+│   ├── inicio/InicioScreen.tsx
+│   ├── alertas/AlertaDetalheScreen.tsx
+│   ├── reportar/ReportarScreen.tsx
+│   ├── abrigos/AbrigosScreen.tsx · AbrigoDetalheScreen.tsx
+│   └── perfil/PerfilScreen.tsx
+├── components/              ← Botao, Cartao, CartaoNivel, CartaoAlerta, CampoTexto, OpcaoRadio, Tela...
+├── contexts/                ← TemaContext, MoradorContext, ConexaoContext, DadosLocaisContext
+├── hooks/                   ← useCarregar, useAreas, usePontoDePartida
+├── services/                ← api.ts (ponto único), apiReal.ts, http.ts, mock/, storageService.ts (AsyncStorage),
+│                              databaseService.ts e relatoStorage.ts (SQLite), relatoService.ts, localizacaoService.ts
+├── themes/                  ← theme.ts: paletas claro e alto contraste, espaçamentos e faixas
+├── constants/               ← rótulos dos contratos e passo a passo dos alertas
+├── types/                   ← tipos espelhando os contratos das APIs do Cidadão e da Telemetria
+└── utils/                   ← distância (Haversine), datas, formatação e confirmação
 ```
 
 ## Jornada do morador
@@ -120,13 +123,14 @@ src/
 | Para onde eu vou? | **Abrigos**: com vaga, do mais perto ao mais longe, filtro "Só acessíveis"; detalhe com **Como chegar** |
 | Como eu aviso os vizinhos? | **Reportar**: 4 tipos, descrição (até 280 caracteres), localização automática ou centro da área, "Meus relatos" e confirmação dos relatos dos vizinhos |
 
-## Banco de dados (SQLite) e modo offline
+## Armazenamento local: AsyncStorage e SQLite
 
-O app guarda no celular, com o **expo-sqlite** (`src/db/`), três tabelas:
+**Preferências no AsyncStorage** ([`storageService.ts`](src/services/storageService.ts)): área escolhida, `dispositivoId` anônimo, letra grande, alto contraste, relatos já confirmados e a lista de áreas. Tudo é carregado ao abrir o app.
+
+**Banco de dados no SQLite** (**expo-sqlite**, em [`databaseService.ts`](src/services/databaseService.ts) e [`relatoStorage.ts`](src/services/relatoStorage.ts)), com duas tabelas:
 
 | Tabela | O que guarda |
 |---|---|
-| `preferencias` | chave/valor: área escolhida, `dispositivoId` anônimo, letra grande, alto contraste, relatos já confirmados e a lista de áreas |
 | `relatos` | os relatos feitos neste celular (`id_local`, `area_risco_id`, tipo, descrição, lat/lon, `criado_em`, `status_sync` = `PENDENTE` · `ENVIADO` · `ERRO`, `id_servidor`) |
 | `cache_status` | a última tela Início que carregou (nível + alertas) de cada área, com a hora |
 
@@ -165,10 +169,10 @@ O `idLocalApp` do relato garante que reenviar não cria duplicata no servidor. S
 
 | Critério | Onde está no projeto |
 |---|---|
-| **Telas e navegação** | Expo Router em [`src/app/`](src/app): Stack raiz com onboarding obrigatório na 1ª abertura, 4 abas com ícone + texto e as rotas dinâmicas [`alerta/[id]`](src/app/alerta/[id].tsx) e [`abrigo/[id]`](src/app/abrigo/[id].tsx) |
-| **Consumo de dados** | [`src/services/`](src/services): interface única [`contrato.ts`](src/services/contrato.ts) com implementação HTTP ([`api-real.ts`](src/services/api-real.ts), [`http.ts`](src/services/http.ts), timeout e ProblemDetails) e mock ([`mock/`](src/services/mock)), escolhidas por `EXPO_PUBLIC_USE_MOCK`. Tipos em [`src/types/`](src/types), iguais aos DTOs reais. Testado contra as APIs reais na etapa M5 |
-| **Banco de dados** | expo-sqlite em [`src/db/`](src/db): tabelas `preferencias`, `relatos` e `cache_status`, com versão de esquema; fila offline e sincronização em [`contexts/morador.tsx`](src/contexts/morador.tsx) |
-| **Acessibilidade** | Seção acima: [`components/`](src/components) com nome, papel e dica; [`contexts/tema.tsx`](src/contexts/tema.tsx) e [`constants/theme.ts`](src/constants/theme.ts) com letra grande, alto contraste e faixas com cor + ícone + texto |
+| **Telas e navegação** | Expo Router em [`src/app/`](src/app) (Stack raiz com onboarding obrigatório na 1ª abertura, 4 abas com ícone + texto e as rotas dinâmicas `alerta/[id]` e `abrigo/[id]`); as telas ficam em [`src/screens/`](src/screens) |
+| **Consumo de dados** | [`src/services/`](src/services): interface única [`contrato.ts`](src/services/contrato.ts) com implementação HTTP ([`apiReal.ts`](src/services/apiReal.ts), [`http.ts`](src/services/http.ts), timeout e ProblemDetails) e mock ([`mock/`](src/services/mock)), escolhidas por `EXPO_PUBLIC_USE_MOCK`. Tipos em [`src/types/`](src/types), iguais aos DTOs reais. Testado contra as APIs reais na etapa M5 |
+| **Banco de dados** | expo-sqlite em [`databaseService.ts`](src/services/databaseService.ts) e [`relatoStorage.ts`](src/services/relatoStorage.ts): tabelas `relatos` e `cache_status`, com versão de esquema; preferências no AsyncStorage ([`storageService.ts`](src/services/storageService.ts)); fila offline e sincronização em [`MoradorContext.tsx`](src/contexts/MoradorContext.tsx) |
+| **Acessibilidade** | Seção acima: [`components/`](src/components) com nome, papel e dica; [`TemaContext.tsx`](src/contexts/TemaContext.tsx) e [`themes/theme.ts`](src/themes/theme.ts) com letra grande, alto contraste e faixas com cor + ícone + texto |
 | **Aderência ao problema** | A jornada da Ficha ponta a ponta, o passo a passo de enchente em [`constants/orientacoes.ts`](src/constants/orientacoes.ts) e o relato que funciona sem internet (quando chove forte, a rede costuma cair) |
 | **Documentação** | Este README e o roteiro do vídeo |
 

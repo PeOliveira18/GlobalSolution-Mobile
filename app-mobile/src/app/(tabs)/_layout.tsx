@@ -5,10 +5,10 @@ import type { SymbolViewProps } from 'expo-symbols';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Icone } from '@/components/icone';
-import { ALVO_TOQUE_MINIMO, Espaco, Raio } from '@/constants/theme';
-import { useMorador } from '@/contexts/morador';
-import { useTema } from '@/contexts/tema';
+import { Icone } from '@/components/Icone';
+import { ALVO_TOQUE_MINIMO, Espaco, Raio } from '@/themes/theme';
+import { useMorador } from '@/contexts/MoradorContext';
+import { useTema } from '@/contexts/TemaContext';
 
 type Aba = {
   rota: 'index' | 'reportar' | 'abrigos' | 'perfil';
