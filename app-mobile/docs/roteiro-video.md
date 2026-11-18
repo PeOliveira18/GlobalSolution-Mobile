@@ -30,7 +30,7 @@ O objetivo é mostrar a jornada principal da Ficha: *"Vai alagar na minha rua? O
 
 ## Comando para a cena da integração (API real)
 
-Com a Telemetria e o C# no ar, envie uma leitura de 235 cm para o sensor da área 1 (contrato ① do PLANO.md). Ela gera o alerta no Serviço do Cidadão:
+Com a Telemetria e o C# no ar, envie uma leitura de 235 cm para o sensor da área 1. Ela gera o alerta no Serviço do Cidadão:
 
 ```bash
 curl -X POST http://localhost:8081/api/leituras -H "Content-Type: application/json" -d "{\"sensorCodigo\":\"SNS-PANTANAL-01\",\"valor\":235.0,\"unidade\":\"CM\"}"

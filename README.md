@@ -44,7 +44,6 @@ Entrega da disciplina **Mobile Development & IOT**: o **app do morador**, em Exp
 ```
 GlobalSolution-Mobile/
 ├── README.md     ← esta Ficha
-├── PLANO.md      ← cópia do plano mestre (oficial no repositório Olho-dagua)
 ├── prompts.md    ← registro do uso de IA
 └── app-mobile/   ← código do app (instruções completas, todos os prints e o roteiro do vídeo no README da pasta)
 ```
@@ -80,10 +79,6 @@ Leia o QR code com o **Expo Go** (SDK 58). Para ligar nas APIs reais, veja [app-
 | Serviço do Cidadão (.NET) | C# Software Development | https://github.com/PeOliveira18/Olho-dagua |
 | Serviço de Telemetria (Java) | SOA e Web Services | https://github.com/PeOliveira18/GlobalSolution-SOA |
 | App do morador (Expo) | Mobile Development & IOT | https://github.com/PeOliveira18/GlobalSolution-Mobile |
-
-## Plano do projeto
-
-O planejamento completo (contratos entre serviços, portas, dados de seed, o que cada disciplina entrega e o cronograma até 19/11) está em **[PLANO.md](PLANO.md)**.
 
 ## Links das entregas
 
