@@ -1,8 +1,3 @@
-// Configuração do Metro (bundler do Expo).
-// Só é necessária para o expo-sqlite funcionar no navegador (Expo Web):
-// o SQLite roda como WebAssembly (.wasm) e precisa de SharedArrayBuffer,
-// que o navegador só libera com os dois cabeçalhos abaixo.
-// No Android e no iOS (Expo Go) nada disso muda.
 const { getDefaultConfig } = require('expo/metro-config');
 
 const config = getDefaultConfig(__dirname);

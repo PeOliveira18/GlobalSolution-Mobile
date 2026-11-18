@@ -9,15 +9,9 @@ import { Texto } from './texto';
 
 type SeloFaixaProps = {
   faixa: Faixa;
-  /** Medida mostrada em destaque, ex.: "2,35 m". */
   complemento?: string;
 };
 
-/**
- * Destaque do cartão de nível: ícone num círculo + nome da faixa + medida em número grande.
- * Sempre cor + ícone + texto (C3.5: nunca só a cor). No alto contraste o círculo fica na cor
- * da faixa com o ícone preto, e o texto continua com contraste AA sobre o fundo preto.
- */
 export function SeloFaixa({ faixa, complemento }: SeloFaixaProps) {
   const { cores, tamanho } = useTema();
   const { cor, fundo } = cores.faixas[faixa];
@@ -35,7 +29,6 @@ export function SeloFaixa({ faixa, complemento }: SeloFaixaProps) {
           styles.circulo,
           { backgroundColor: cor, width: tamanhoIcone + 26, height: tamanhoIcone + 26 },
         ]}>
-        {/* O fundo claro da faixa sobre a cor da faixa tem ≥ 4,6:1 (no alto contraste, preto sobre a cor). */}
         <Icone nome={icone} cor={fundo} tamanho={tamanhoIcone} />
       </View>
       <View style={styles.textos}>

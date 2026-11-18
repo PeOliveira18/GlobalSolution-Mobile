@@ -48,7 +48,7 @@ npx expo start
 
 ## Modo mock × API real
 
-Por padrão o app usa **dados simulados** (`src/services/mock/*.json`, com os dados da B4 do PLANO.md), então funciona sem nenhum backend no ar.
+Por padrão o app usa **dados simulados** (`src/services/mock/*.json`, com os mesmos dados de demonstração dos backends), então funciona sem nenhum backend no ar.
 
 Para usar os serviços de verdade, copie `.env.example` para `.env`, ajuste e reinicie o `npx expo start`:
 
@@ -102,7 +102,7 @@ src/app/
 └── abrigo/[id].tsx      ← detalhe do abrigo
 
 src/
-├── types/               ← tipos espelhando os contratos (B5 e C1.4)
+├── types/               ← tipos espelhando os contratos das APIs do Cidadão e da Telemetria
 ├── services/            ← api.ts (ponto único), api-real.ts, http.ts, mock/, localização, envio de relatos
 ├── contexts/            ← tema.tsx (letra grande, alto contraste) e morador.tsx (área, dispositivo, relatos)
 ├── constants/           ← paletas e faixas, rótulos dos contratos, passo a passo dos alertas
@@ -142,7 +142,7 @@ O `idLocalApp` do relato garante que reenviar não cria duplicata no servidor. S
 >
 > No navegador, o SQLite roda em WebAssembly e precisa dos cabeçalhos configurados em `metro.config.js`.
 
-## Acessibilidade (C3.5)
+## Acessibilidade
 
 - Todo elemento tocável tem nome, papel e dica para o TalkBack/VoiceOver; áreas de toque com pelo menos 48 × 48 dp.
 - A faixa do córrego e a gravidade dos alertas aparecem sempre com **cor + ícone + texto**.
@@ -174,4 +174,4 @@ O `idLocalApp` do relato garante que reenviar não cria duplicata no servidor. S
 
 ## Dados
 
-Todos os dados são **simulados** (áreas, abrigos, sensores e alertas vêm da seção B4 do [PLANO.md](../PLANO.md)): nenhum dado pessoal real. O app não pede nome, telefone nem CPF; o celular é identificado por um código aleatório (`dispositivoId`).
+Todos os dados são **simulados** (áreas, abrigos, sensores e alertas são os mesmos dados de demonstração dos backends): nenhum dado pessoal real. O app não pede nome, telefone nem CPF; o celular é identificado por um código aleatório (`dispositivoId`).

@@ -23,9 +23,7 @@ export type PreferenciasVisuais = {
 
 type ValorTema = {
   cores: Paleta;
-  /** 1 ou 1,3 (fonte grande). O fontScale do sistema é aplicado por cima pelo React Native. */
   escala: number;
-  /** Converte um tamanho base (ex.: Fonte.corpo) para o tamanho com a preferência aplicada. */
   tamanho: (base: number) => number;
   preferencias: PreferenciasVisuais;
   definirFonteGrande: (ativo: boolean) => void;
@@ -36,20 +34,16 @@ const ContextoTema = createContext<ValorTema | null>(null);
 
 type ProvedorTemaProps = {
   children: ReactNode;
-  /** Valores lidos da tabela `preferencias` do SQLite ao abrir o app. */
   inicial?: Partial<PreferenciasVisuais>;
-  /** Chamado a cada mudança, para gravar no SQLite. Deve ser estável (useCallback). */
   aoMudar?: (preferencias: PreferenciasVisuais) => void;
 };
 
-/** Guarda as preferências de acessibilidade e entrega a paleta e a escala para todas as telas. */
 export function ProvedorTema({ children, inicial, aoMudar }: ProvedorTemaProps) {
   const [preferencias, setPreferencias] = useState<PreferenciasVisuais>({
     fonteGrande: inicial?.fonteGrande ?? false,
     altoContraste: inicial?.altoContraste ?? false,
   });
 
-  // Grava cada mudança (o valor inicial já veio do banco, então é pulado).
   const primeiraVez = useRef(true);
   useEffect(() => {
     if (primeiraVez.current) {

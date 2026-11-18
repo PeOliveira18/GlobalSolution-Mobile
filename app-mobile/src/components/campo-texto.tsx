@@ -14,10 +14,6 @@ type CampoTextoProps = {
   placeholder?: string;
 };
 
-/**
- * Campo de texto de várias linhas com contador de caracteres.
- * Passar do limite não corta o texto: mostra o erro "Máximo de N caracteres" (TC-F04-02).
- */
 export function CampoTexto({ rotulo, dica, valor, aoMudar, limite, placeholder }: CampoTextoProps) {
   const { cores, tamanho } = useTema();
   const passou = valor.length > limite;

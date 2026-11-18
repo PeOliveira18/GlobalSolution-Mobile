@@ -14,15 +14,9 @@ type OpcaoRadioProps = {
   selecionada: boolean;
   aoSelecionar: () => void;
   icone?: SymbolViewProps['name'];
-  /** Linha dentro de um `Grupo` (estilo Ajustes): sem borda nem sombra próprias. */
   agrupada?: boolean;
 };
 
-/**
- * Uma opção de uma lista de escolha única (área, tipo de relato...).
- * A selecionada fica com borda grossa, fundo de destaque e a marca preenchida com ✓,
- * além da cor (nunca só a cor).
- */
 export function OpcaoRadio({ rotulo, descricao, dica, selecionada, aoSelecionar, icone, agrupada }: OpcaoRadioProps) {
   const { cores, tamanho } = useTema();
   const tamanhoIcone = tamanho(26);
@@ -37,8 +31,7 @@ export function OpcaoRadio({ rotulo, descricao, dica, selecionada, aoSelecionar,
       style={({ pressed }) => [
         styles.opcao,
         agrupada
-          ? // No grupo, a escolhida fica com fundo de destaque e a marca ✓ (a borda é do cartão do grupo).
-            { borderRadius: 0, backgroundColor: selecionada || pressed ? cores.primariaSuave : 'transparent' }
+          ? { borderRadius: 0, backgroundColor: selecionada || pressed ? cores.primariaSuave : 'transparent' }
           : {
               borderColor: selecionada ? cores.primaria : cores.bordaSuave,
               borderWidth: selecionada ? 3 : 1,

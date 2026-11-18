@@ -11,7 +11,6 @@ import { Cartao } from './cartao';
 import { Icone } from './icone';
 import { Texto } from './texto';
 
-/** Item da lista de alertas: gravidade (cor + ícone + texto), mensagem e horário. Abre o detalhe. */
 export function CartaoAlerta({ alerta }: { alerta: Alerta }) {
   const { cores, tamanho } = useTema();
   const severidade = SEVERIDADES[alerta.severidade];
@@ -24,7 +23,6 @@ export function CartaoAlerta({ alerta }: { alerta: Alerta }) {
       rotulo={`${severidade.rotulo}. ${alerta.mensagem}`}
       dica="Abre o passo a passo do que fazer agora">
       <View style={styles.topo}>
-        {/* Selo da gravidade: no alto contraste o fundo é preto e a borda colorida marca a gravidade. */}
         <View style={[styles.selo, { backgroundColor: fundo, borderColor: cor }]}>
           <Icone nome={FAIXAS[severidade.faixaVisual].icone} cor={cor} tamanho={tamanho(18)} />
           <Texto variante="legenda" negrito style={{ color: cor, letterSpacing: 0.4 }}>

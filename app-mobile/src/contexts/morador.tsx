@@ -33,7 +33,6 @@ import { useTema, type PreferenciasVisuais } from './tema';
 
 export type { RelatoLocal, StatusSync } from '@/db/repositorio';
 
-/** O que o morador preenche na tela Reportar. */
 export type NovoRelato = {
   areaRiscoId: number;
   tipo: TipoOcorrencia;
@@ -42,7 +41,6 @@ export type NovoRelato = {
   longitude: number;
 };
 
-/** Dados lidos do SQLite ao abrir o app. */
 export type DadosIniciaisMorador = {
   areaId: number | null;
   dispositivoId: string;
@@ -52,18 +50,12 @@ export type DadosIniciaisMorador = {
 };
 
 type ValorMorador = {
-  /** Área de risco escolhida no onboarding; `null` antes da primeira abertura. */
   areaId: number | null;
-  /** GUID anônimo do celular (sem nome, telefone ou CPF). */
   dispositivoId: string;
-  /** Escolhe a área e inscreve o celular nela. Devolve `false` se o servidor não respondeu. */
   inscrever: (areaId: number, preferencias?: PreferenciasVisuais) => Promise<boolean>;
   relatos: RelatoLocal[];
-  /** Guarda o relato no celular e tenta enviar. Sem internet, ele fica na fila (PENDENTE). */
   registrarRelato: (novo: NovoRelato) => Promise<ResultadoEnvio>;
-  /** Envia os relatos pendentes. Devolve quantos foram enviados. */
   sincronizar: () => Promise<number>;
-  /** Relatos de outros moradores que este celular já confirmou (para não confirmar duas vezes). */
   confirmados: number[];
   marcarConfirmado: (idServidor: number) => void;
   limparDados: () => Promise<void>;
@@ -71,13 +63,6 @@ type ValorMorador = {
 
 const ContextoMorador = createContext<ValorMorador | null>(null);
 
-/**
- * Dados do morador neste celular, guardados no SQLite (C3.4):
- * área e identificador na tabela `preferencias`, relatos na tabela `relatos`.
- *
- * Sincronização: os relatos PENDENTE são enviados ao abrir o app, quando a internet
- * volta (netinfo) e quando o morador puxa a tela para atualizar.
- */
 export function ProvedorMorador({ children, inicial }: { children: ReactNode; inicial: DadosIniciaisMorador }) {
   const db = useSQLiteContext();
   const { online } = useConexao();
@@ -107,7 +92,6 @@ export function ProvedorMorador({ children, inicial }: { children: ReactNode; in
         await apagarPreferencia(db, 'inscricao_pendente');
         return true;
       } catch {
-        // Fica marcada para refazer na próxima sincronização.
         inscricaoPendente.current = true;
         await salvarPreferencia(db, 'inscricao_pendente', '1');
         return false;
@@ -125,7 +109,6 @@ export function ProvedorMorador({ children, inicial }: { children: ReactNode; in
         statusSync: 'PENDENTE',
         idServidor: null,
       };
-      // 1º guarda no celular (não se perde nem se o app fechar); 2º tenta enviar.
       await inserirRelato(db, relato);
       await recarregarRelatos();
 
@@ -148,7 +131,7 @@ export function ProvedorMorador({ children, inicial }: { children: ReactNode; in
     try {
       for (const relato of await listarPendentes(db)) {
         const resultado = await enviarRelato(relato);
-        if (resultado.tipo === 'pendente') break; // a internet caiu de novo: tenta depois
+        if (resultado.tipo === 'pendente') break;
         if (resultado.tipo === 'enviado') {
           await atualizarStatusRelato(db, relato.idLocal, 'ENVIADO', resultado.idServidor);
           enviados++;
@@ -169,7 +152,6 @@ export function ProvedorMorador({ children, inicial }: { children: ReactNode; in
     }
   }, [db, areaId, inscrever, recarregarRelatos]);
 
-  // Ao abrir o app e sempre que a internet voltar.
   useEffect(() => {
     if (online) sincronizar();
   }, [online, sincronizar]);

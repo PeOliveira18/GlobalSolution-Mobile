@@ -11,14 +11,9 @@ type LinhaInterruptorProps = {
   dica: string;
   ligado: boolean;
   aoMudar: (ligado: boolean) => void;
-  /** Linha dentro de um `Grupo` (estilo Ajustes): sem borda nem sombra próprias. */
   agrupada?: boolean;
 };
 
-/**
- * Linha inteira tocável com um interruptor (Switch).
- * Para o leitor de tela, a linha é um único "interruptor" com nome, estado e dica.
- */
 export function LinhaInterruptor({ rotulo, descricao, dica, ligado, aoMudar, agrupada }: LinhaInterruptorProps) {
   const { cores } = useTema();
 
@@ -47,12 +42,10 @@ export function LinhaInterruptor({ rotulo, descricao, dica, ligado, aoMudar, agr
           </Texto>
         ) : null}
       </View>
-      {/* Só visual: o nome e o estado já são anunciados pela linha inteira, e o toque também é dela. */}
       <View pointerEvents="none" aria-hidden importantForAccessibility="no-hide-descendants">
         <Switch
           value={ligado}
           trackColor={{ false: cores.borda, true: cores.primaria }}
-          // Desligado, a bolinha fica branca nas duas paletas: no alto contraste, preta sumiria no trilho escuro.
           thumbColor={ligado ? cores.sobrePrimaria : '#FFFFFF'}
           focusable={false}
         />

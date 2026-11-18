@@ -7,7 +7,6 @@ type Metodo = 'GET' | 'POST' | 'PATCH';
 
 type Consulta = Record<string, string | number | boolean | null | undefined>;
 
-/** Monta a URL com a query string, ignorando os parâmetros vazios. */
 export function montarUrl(base: string, caminho: string, consulta?: Consulta): string {
   const params = Object.entries(consulta ?? {})
     .filter(([, valor]) => valor !== undefined && valor !== null && valor !== '')
@@ -15,10 +14,6 @@ export function montarUrl(base: string, caminho: string, consulta?: Consulta): s
   return `${base}${caminho}${params.length ? `?${params.join('&')}` : ''}`;
 }
 
-/**
- * Chamada HTTP com JSON e timeout.
- * Erros viram `ErroApi`; respostas de erro das APIs trazem o ProblemDetails (B5).
- */
 export async function requisitar<T>(metodo: Metodo, url: string, corpo?: unknown): Promise<T> {
   const controle = new AbortController();
   const relogio = setTimeout(() => controle.abort(), TIMEOUT_MS);
@@ -53,7 +48,6 @@ export async function requisitar<T>(metodo: Metodo, url: string, corpo?: unknown
     );
   }
 
-  // 204 (PATCH): sem corpo.
   if (resposta.status === 204) return undefined as T;
   return (await lerJson<T>(resposta)) as T;
 }

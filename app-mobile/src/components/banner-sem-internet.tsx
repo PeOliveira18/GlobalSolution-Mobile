@@ -8,16 +8,11 @@ import { formatarQuando } from '@/utils/formatar';
 import { Icone } from './icone';
 import { Texto } from './texto';
 
-/**
- * Faixa no topo da tela quando o celular está sem internet (C3.3).
- * Com `dadosDe`, diz de quando são os dados guardados que estão aparecendo.
- */
 export function BannerSemInternet({ dadosDe }: { dadosDe?: string | null }) {
   const { online } = useConexao();
   const { cores } = useTema();
   if (online && !dadosDe) return null;
 
-  // Com internet mas sem resposta do servidor, a mensagem não pode culpar a internet do morador.
   const motivo = online ? 'Servidor indisponível' : 'Sem internet';
   const texto = dadosDe
     ? `${motivo}: mostrando dados de ${formatarQuando(dadosDe)}.`

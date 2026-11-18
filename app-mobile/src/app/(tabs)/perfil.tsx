@@ -14,7 +14,6 @@ import { useMorador } from '@/contexts/morador';
 import { useTema } from '@/contexts/tema';
 import { confirmar } from '@/utils/confirmar';
 
-/** PERFIL (C3.3): trocar de área, letra grande, alto contraste, sobre o projeto e limpar dados. Seções agrupadas, como nos Ajustes do iPhone. */
 export default function PerfilScreen() {
   const { cores, tamanho, preferencias, definirFonteGrande, definirAltoContraste } = useTema();
   const { areaId, inscrever, limparDados } = useMorador();
@@ -26,7 +25,6 @@ export default function PerfilScreen() {
     setAviso(ok ? 'Área trocada. Os alertas agora são desta área.' : 'Área trocada no celular. Sem conexão com o servidor agora.');
   };
 
-  // As preferências também vão para a inscrição no servidor (C1.3: PrefereFonteGrande/AltoContraste).
   const mudarFonte = (ativo: boolean) => {
     definirFonteGrande(ativo);
     if (areaId != null) inscrever(areaId, { ...preferencias, fonteGrande: ativo });
@@ -76,7 +74,6 @@ export default function PerfilScreen() {
 
       <Grupo titulo="Sobre o projeto">
         <View style={styles.linha}>
-          {/* Decorativa: o nome do app vem logo ao lado, em texto. */}
           <Image
             source={require('@/assets/images/icon.png')}
             style={[styles.iconeApp, preferencias.altoContraste && { borderWidth: 2, borderColor: cores.borda }]}
@@ -133,7 +130,6 @@ export default function PerfilScreen() {
   );
 }
 
-/** Os ODS que o projeto atende, com o mesmo texto de antes. */
 const ODS = [
   { numero: 11, texto: 'cidades mais seguras, com menos perdas em desastres (meta 11.5).' },
   { numero: 13, texto: 'mais preparo para enfrentar chuvas e enchentes (meta 13.1).' },

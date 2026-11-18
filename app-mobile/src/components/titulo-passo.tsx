@@ -10,10 +10,6 @@ type TituloPassoProps = {
   texto: string;
 };
 
-/**
- * Título de um passo numerado (ex.: "1. Onde você mora?"): o número vai num círculo.
- * Para o leitor de tela continua sendo um cabeçalho lido como "1. Onde você mora?".
- */
 export function TituloPasso({ numero, texto }: TituloPassoProps) {
   const { cores, tamanho } = useTema();
   const lado = tamanho(Fonte.subtitulo) + 14;

@@ -11,10 +11,6 @@ import { ProvedorTema, type PreferenciasVisuais } from './tema';
 
 type DadosIniciais = { visual: PreferenciasVisuais; morador: DadosIniciaisMorador };
 
-/**
- * Lê o SQLite uma vez ao abrir o app (preferências, área, dispositivo e relatos)
- * e só então monta o tema e os dados do morador com esses valores.
- */
 export function ProvedorDadosLocais({ children }: { children: ReactNode }) {
   const db = useSQLiteContext();
   const [dados, setDados] = useState<DadosIniciais | null>(null);
@@ -24,7 +20,6 @@ export function ProvedorDadosLocais({ children }: { children: ReactNode }) {
       const prefs = await lerPreferencias(db);
       let dispositivoId = prefs.dispositivo_id;
       if (!dispositivoId) {
-        // 1ª abertura: cria o identificador anônimo do celular.
         dispositivoId = randomUUID();
         await salvarPreferencia(db, 'dispositivo_id', dispositivoId);
       }

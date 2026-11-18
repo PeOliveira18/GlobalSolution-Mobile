@@ -10,13 +10,10 @@ import { OpcaoRadio } from './opcao-radio';
 type SeletorAreaProps = {
   selecionada: number | null;
   aoSelecionar: (areaId: number) => void;
-  /** Como o leitor de tela descreve o grupo, ex.: "Escolha a sua área". */
   rotuloGrupo: string;
-  /** Mostra as áreas como linhas de um único cartão (estilo Ajustes), como no Perfil. */
   agrupado?: boolean;
 };
 
-/** Lista das áreas de risco (GET /api/areas) como opções de escolha única. */
 export function SeletorArea({ selecionada, aoSelecionar, rotuloGrupo, agrupado }: SeletorAreaProps) {
   const { dados: areas, erro, carregando, recarregar } = useAreas();
 

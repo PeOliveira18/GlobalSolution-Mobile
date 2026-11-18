@@ -5,10 +5,6 @@ import { definirConectado } from '@/services/conexao';
 
 const ContextoConexao = createContext<{ online: boolean }>({ online: true });
 
-/**
- * Acompanha a internet do celular com o netinfo (C3.4).
- * "Sem internet" = sem rede, ou com rede mas sem acesso à internet.
- */
 export function ProvedorConexao({ children }: { children: ReactNode }) {
   const [online, setOnline] = useState(true);
 

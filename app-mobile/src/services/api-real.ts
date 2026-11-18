@@ -8,7 +8,6 @@ const cidadao = (caminho: string, consulta?: Parameters<typeof montarUrl>[2]) =>
 const telemetria = (caminho: string, consulta?: Parameters<typeof montarUrl>[2]) =>
   montarUrl(URL_API_TELEMETRIA, caminho, consulta);
 
-/** Implementação que fala com os backends de verdade via HTTP. */
 export const apiReal: ApiOlhoDagua = {
   listarAreas: () => requisitar('GET', cidadao('/areas')),
   obterArea: (id) => requisitar('GET', cidadao(`/areas/${id}`)),

@@ -6,11 +6,6 @@ import type { Faixa } from '@/types';
 
 import { Texto } from './texto';
 
-/**
- * Régua das 4 faixas do córrego (Normal → Emergência): as faixas até a atual ficam preenchidas
- * com a cor de cada uma, e a atual é mais alta. É só visual: o leitor de tela já ouve o nome
- * da faixa e a medida no SeloFaixa, então a régua fica escondida dele.
- */
 export function ReguaFaixas({ faixa }: { faixa: Faixa }) {
   const { cores } = useTema();
   const atual = ORDEM_FAIXAS.indexOf(faixa);

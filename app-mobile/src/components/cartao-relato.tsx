@@ -13,14 +13,12 @@ import { QuadradoIcone } from './grupo';
 import { Icone } from './icone';
 import { Texto } from './texto';
 
-/** Como a situação do relato aparece: a cor e o ícone acompanham o texto, nunca o substituem. */
 export type TomSituacao = 'pendente' | 'erro' | 'sucesso' | 'neutro';
 
 type CartaoRelatoProps = {
   tipo: TipoOcorrencia;
   descricao: string | null;
   criadoEm: string;
-  /** Situação em texto (ex.: "Pendente: será enviado quando a internet voltar"). */
   situacao: string;
   tom?: TomSituacao;
   children?: ReactNode;
@@ -33,12 +31,10 @@ const ICONES: Record<TomSituacao, SymbolViewProps['name']> = {
   neutro: { ios: 'hourglass', android: 'hourglass_empty', web: 'hourglass_empty' },
 };
 
-/** Um relato de alagamento (meu ou de um vizinho), com tipo, descrição, hora e situação. */
 export function CartaoRelato({ tipo, descricao, criadoEm, situacao, tom = 'neutro', children }: CartaoRelatoProps) {
   const { cores, tamanho, preferencias } = useTema();
   const visual = TIPOS_OCORRENCIA[tipo];
 
-  // Pendente usa o amarelo da faixa Atenção, erro o vermelho e sucesso o verde (contraste ≥ 5,4:1).
   const { cor, fundo } =
     tom === 'pendente'
       ? cores.faixas.ATENCAO
@@ -64,8 +60,6 @@ export function CartaoRelato({ tipo, descricao, criadoEm, situacao, tom = 'neutr
           </Texto>
         </View>
         {descricao ? <Texto>{descricao}</Texto> : null}
-        {/* No alto contraste o fundo é preto e a borda colorida marca a situação (a neutra fica sem borda,
-            para não parecer um botão). */}
         <View
           style={[
             styles.situacao,

@@ -18,7 +18,6 @@ import { api } from '@/services/api';
 import type { TipoAlerta } from '@/types';
 import { formatarDataHora } from '@/utils/formatar';
 
-/** DETALHE DO ALERTA (C3.3): "O que eu faço?" — mensagem + passo a passo numerado, em linha do tempo. */
 export default function AlertaScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { cores, tamanho, preferencias } = useTema();
@@ -48,7 +47,6 @@ export default function AlertaScreen() {
 
   return (
     <Tela>
-      {/* Mesmo visual do cartão de nível do Início: fundo e borda da faixa, ícone num círculo. */}
       <Cartao style={[styles.destaque, { backgroundColor: fundo, borderColor: cor }]}>
         <View style={styles.linha} accessible accessibilityLabel={`Gravidade: ${severidade.rotulo}`}>
           <View style={[styles.circulo, { width: ladoIcone, height: ladoIcone, backgroundColor: cor }]}>
@@ -71,7 +69,6 @@ export default function AlertaScreen() {
       </Cartao>
 
       <Texto variante="subtitulo">O que fazer agora</Texto>
-      {/* Linha do tempo: os números ligados por um traço mostram a ordem dos passos. */}
       <Cartao style={{ gap: 0 }}>
         <View role="list">
           {passos.map((passo, i) => {
@@ -97,7 +94,6 @@ export default function AlertaScreen() {
                     <View
                       style={[
                         styles.traco,
-                        // Traço decorativo: azul translúcido na paleta padrão, amarelo cheio no alto contraste.
                         { backgroundColor: cores.primaria, opacity: preferencias.altoContraste ? 1 : 0.28 },
                       ]}
                     />
@@ -128,14 +124,12 @@ export default function AlertaScreen() {
   );
 }
 
-/** Ícone de cada origem do alerta. */
 const ICONES_TIPO: Record<TipoAlerta, SymbolViewProps['name']> = {
   SENSOR: { ios: 'antenna.radiowaves.left.and.right', android: 'sensors', web: 'sensors' },
   COMUNITARIO: { ios: 'person.2.fill', android: 'groups', web: 'groups' },
   PREVISAO: { ios: 'cloud.rain.fill', android: 'rainy', web: 'rainy' },
 };
 
-/** Lado do círculo do número: acompanha a letra grande. */
 const ladoNumero = (tamanho: (base: number) => number) => tamanho(Fonte.corpo) + 14;
 
 function LinhaMeta({ icone, cor, texto }: { icone: SymbolViewProps['name']; cor: string; texto: string }) {

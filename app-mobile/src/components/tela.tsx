@@ -9,25 +9,16 @@ import { BannerSemInternet } from './banner-sem-internet';
 
 type TelaProps = {
   children: ReactNode;
-  /** Liga o "puxar para atualizar". */
   aoAtualizar?: () => void;
   atualizando?: boolean;
-  /** Quando a tela mostra dados guardados no celular, a hora em que eles foram salvos. */
   dadosDe?: string | null;
-  /** Para telas sem cabeçalho (onboarding): afasta o conteúdo da barra de status e do indicador de início. */
   margemSegura?: boolean;
 };
 
-/**
- * Área rolável padrão das telas: fundo do tema, banner "Sem internet" no topo
- * e o "puxar para atualizar" opcional.
- */
 export function Tela({ children, aoAtualizar, atualizando = false, dadosDe, margemSegura }: TelaProps) {
   const { cores } = useTema();
   const insets = useSafeAreaInsets();
 
-  // O indicador só aparece quando o morador puxa a tela. Nas recargas automáticas (ex.: ao voltar
-  // para a aba), ligar e desligar o indicador rápido deixava um espaço em branco no topo no iOS.
   const [puxou, setPuxou] = useState(false);
   const [atualizandoAntes, setAtualizandoAntes] = useState(atualizando);
   if (atualizando !== atualizandoAntes) {
@@ -66,7 +57,6 @@ export function Tela({ children, aoAtualizar, atualizando = false, dadosDe, marg
 
   if (!margemSegura) return rolagem;
 
-  // Sem cabeçalho, o conteúdo passaria por baixo do relógio: uma faixa da cor do fundo cobre a barra de status.
   return (
     <View style={{ flex: 1, backgroundColor: cores.fundo }}>
       {rolagem}

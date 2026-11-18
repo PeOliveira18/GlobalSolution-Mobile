@@ -7,7 +7,6 @@ import { useTema } from '@/contexts/tema';
 import { Icone } from './icone';
 import { Texto } from './texto';
 
-/** Etiqueta pequena com ícone + texto (ex.: "Acessível", "Aceita animais"). */
 export function Etiqueta({ texto, icone }: { texto: string; icone: SymbolViewProps['name'] }) {
   const { cores, tamanho } = useTema();
   return (

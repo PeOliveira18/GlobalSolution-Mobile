@@ -1,10 +1,5 @@
 import type { Alerta } from '@/types';
 
-/**
- * Passo a passo "O que fazer agora" do detalhe do alerta (C3.3).
- * Baseado nas orientações gerais de Defesa Civil para enchentes, em linguagem simples.
- */
-
 const EMERGENCIA = [
   'Saia de casa agora e vá para o abrigo mais próximo.',
   'Leve só o essencial: documentos, remédios e o celular.',
@@ -49,5 +44,4 @@ export function passosDoAlerta(alerta: Alerta): string[] {
   return ATENCAO;
 }
 
-/** Telefone da Defesa Civil (serviço público nacional). */
 export const TELEFONE_DEFESA_CIVIL = '199';

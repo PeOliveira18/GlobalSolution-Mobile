@@ -9,7 +9,6 @@ import { Cartao } from './cartao';
 import { Icone } from './icone';
 import { Texto } from './texto';
 
-/** Indicador de carregamento com texto (o leitor de tela anuncia "Carregando…"). */
 export function Carregando({ texto = 'Carregando…' }: { texto?: string }) {
   const { cores } = useTema();
   return (
@@ -20,7 +19,6 @@ export function Carregando({ texto = 'Carregando…' }: { texto?: string }) {
   );
 }
 
-/** Mensagem de erro em linguagem simples, com botão para tentar de novo. */
 export function ErroCarregar({ mensagem, aoTentarDeNovo }: { mensagem: string; aoTentarDeNovo?: () => void }) {
   const { cores } = useTema();
   return (
@@ -42,10 +40,6 @@ export function ErroCarregar({ mensagem, aoTentarDeNovo }: { mensagem: string; a
   );
 }
 
-/**
- * Lista vazia (ex.: "Nenhum alerta na sua área agora."): ícone num círculo + o texto, centralizados.
- * `positivo` usa o verde da faixa Normal, para quando "vazio" é uma boa notícia.
- */
 export function EstadoVazio({
   texto,
   icone,
@@ -79,7 +73,6 @@ export function EstadoVazio({
   );
 }
 
-/** Aviso curto de sucesso ou informação, anunciado pelo leitor de tela quando aparece. */
 export function Aviso({ texto, tipo = 'info' }: { texto: string; tipo?: 'info' | 'sucesso' | 'erro' }) {
   const { cores } = useTema();
   const cor = tipo === 'erro' ? cores.perigo : tipo === 'sucesso' ? cores.faixas.NORMAL.cor : cores.primaria;
@@ -115,7 +108,6 @@ const styles = StyleSheet.create({
   },
   circulo: {
     borderRadius: Raio.pilula,
-    // A borda só fica visível no alto contraste (lá o fundo do círculo é escuro como o cartão).
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',

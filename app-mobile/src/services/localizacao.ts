@@ -4,12 +4,6 @@ export type Coordenadas = { latitude: number; longitude: number };
 
 const TEMPO_MAXIMO_MS = 8000;
 
-/**
- * Pega a localização atual do celular.
- * Devolve `null` se o morador negar a permissão, se o GPS (ou a pergunta de permissão)
- * demorar mais de 8 s, ou se der erro: aí as telas usam o centro da área escolhida
- * (fallback da C3.3).
- */
 export async function obterLocalizacao(): Promise<Coordenadas | null> {
   const limite = new Promise<null>((resolve) => setTimeout(() => resolve(null), TEMPO_MAXIMO_MS));
   return Promise.race([buscar(), limite]);

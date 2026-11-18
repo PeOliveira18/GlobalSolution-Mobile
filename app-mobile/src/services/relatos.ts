@@ -7,11 +7,6 @@ export type ResultadoEnvio =
   | { tipo: 'pendente' }
   | { tipo: 'erro'; mensagem: string };
 
-/**
- * Envia um relato ao Serviço do Cidadão (POST /api/ocorrencias).
- * - Sem internet, servidor fora do ar ou com erro 5xx → fica PENDENTE para enviar depois (fila da M4).
- * - O `idLocalApp` garante que reenviar o mesmo relato não cria duplicata no servidor.
- */
 export async function enviarRelato(relato: RelatoLocal): Promise<ResultadoEnvio> {
   try {
     const criado = await api.registrarOcorrencia({

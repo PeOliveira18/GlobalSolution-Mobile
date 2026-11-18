@@ -2,13 +2,6 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import type { TipoOcorrencia } from '@/types';
 
-/**
- * Todas as leituras e gravações do SQLite ficam aqui (as telas não escrevem SQL).
- * Os valores sempre vão como parâmetros (?), nunca colados no texto do SQL.
- */
-
-// ---------- preferencias (chave/valor) ----------
-
 export type ChavePreferencia =
   | 'area_id'
   | 'dispositivo_id'
@@ -16,7 +9,6 @@ export type ChavePreferencia =
   | 'alto_contraste'
   | 'confirmados'
   | 'inscricao_pendente'
-  /** Lista de áreas (JSON), para escolher a área e reportar mesmo sem internet. */
   | 'areas';
 
 export async function lerPreferencias(db: SQLiteDatabase): Promise<Partial<Record<ChavePreferencia, string>>> {
@@ -38,13 +30,9 @@ export async function apagarPreferencia(db: SQLiteDatabase, chave: ChavePreferen
   await db.runAsync('DELETE FROM preferencias WHERE chave = ?', chave);
 }
 
-// ---------- relatos ----------
-
 export type StatusSync = 'PENDENTE' | 'ENVIADO' | 'ERRO';
 
-/** Relato feito neste celular (uma linha da tabela `relatos`). */
 export type RelatoLocal = {
-  /** GUID gerado no celular; vai para a API como `idLocalApp` (idempotência). */
   idLocal: string;
   areaRiscoId: number;
   tipo: TipoOcorrencia;
@@ -53,7 +41,6 @@ export type RelatoLocal = {
   longitude: number;
   criadoEm: string;
   statusSync: StatusSync;
-  /** ID do relato no Serviço do Cidadão, depois de enviado. */
   idServidor: number | null;
 };
 
@@ -123,8 +110,6 @@ export async function atualizarStatusRelato(
   );
 }
 
-// ---------- cache_status ----------
-
 export async function salvarCache<T>(db: SQLiteDatabase, areaId: number, dados: T, quando: string) {
   await db.runAsync(
     `INSERT INTO cache_status (area_id, json, atualizado_em) VALUES (?, ?, ?)
@@ -146,9 +131,6 @@ export async function lerCache<T>(
   return linha ? { dados: JSON.parse(linha.json) as T, atualizadoEm: linha.atualizado_em } : null;
 }
 
-// ---------- limpar ----------
-
-/** "Limpar dados locais" do Perfil: apaga as três tabelas. */
 export async function apagarTudo(db: SQLiteDatabase) {
   await db.withTransactionAsync(async () => {
     await db.execAsync('DELETE FROM relatos; DELETE FROM cache_status; DELETE FROM preferencias;');

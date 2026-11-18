@@ -7,10 +7,6 @@ import type { Area } from '@/types';
 
 import { useCarregar } from './use-carregar';
 
-/**
- * Lista das áreas de risco (GET /api/areas), guardada no SQLite.
- * Sem internet, usa a última lista salva: assim dá para reportar offline.
- */
 export function useAreas() {
   const db = useSQLiteContext();
 

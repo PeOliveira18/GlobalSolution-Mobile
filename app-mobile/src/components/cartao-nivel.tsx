@@ -16,11 +16,6 @@ type CartaoNivelProps = {
   status: StatusAtualSensor;
 };
 
-/**
- * Cartão principal ("herói") do Início: nível do córrego da área com cor + ícone + texto,
- * a régua das faixas, o que isso significa e o horário da última medição.
- * O fundo do cartão é o tom claro da faixa (no alto contraste: preto com borda colorida).
- */
 export function CartaoNivel({ nomeArea, status }: CartaoNivelProps) {
   const { cores, tamanho } = useTema();
   const { cor, fundo } = cores.faixas[status.faixa];

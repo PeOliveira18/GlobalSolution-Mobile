@@ -27,12 +27,10 @@ const TIPOS = Object.keys(TIPOS_OCORRENCIA) as TipoOcorrencia[];
 
 type Retorno = { tipo: 'sucesso' | 'info' | 'erro'; texto: string };
 
-/** REPORTAR (C3.3): "Como eu aviso os vizinhos?" */
 export default function ReportarScreen() {
   const { online } = useConexao();
   const { areaId, relatos, registrarRelato, sincronizar, confirmados, marcarConfirmado } = useMorador();
 
-  // ----- formulário -----
   const [tipo, setTipo] = useState<TipoOcorrencia | null>(null);
   const [descricao, setDescricao] = useState('');
   const [areaRelato, setAreaRelato] = useState<number>(areaId!);
@@ -45,19 +43,16 @@ export default function ReportarScreen() {
     obterLocalizacao().then(setGps);
   }, []);
 
-  // Vem do SQLite quando está sem internet (o relato offline precisa do centro da área).
   const { dados: areas } = useAreas();
   const area = areas?.find((a) => a.id === areaRelato);
   const local = escolherLocal(area, gps === 'buscando' ? null : gps);
 
-  // ----- relatos da área (para "Meus relatos" e "Relatos dos vizinhos") -----
   const carregarVizinhos = useCallback(() => api.listarOcorrencias({ areaId: areaId! }), [areaId]);
   const vizinhos = useCarregar(carregarVizinhos);
   const meusIds = new Set(relatos.map((r) => r.idLocal));
   const doServidor = new Map((vizinhos.dados ?? []).map((o) => [o.idLocalApp, o]));
   const deOutros = (vizinhos.dados ?? []).filter((o) => !meusIds.has(o.idLocalApp) && o.status !== 'RESOLVIDA');
 
-  // ----- envio -----
   const podeEnviar = tipo != null && descricao.length <= LIMITE_DESCRICAO && !!local;
 
   const enviar = async () => {
@@ -65,7 +60,6 @@ export default function ReportarScreen() {
     setEnviando(true);
     setRetorno(null);
 
-    // Guarda no SQLite e tenta enviar; sem internet, fica na fila (PENDENTE).
     const resultado = await registrarRelato({
       areaRiscoId: areaRelato,
       tipo,
@@ -103,7 +97,6 @@ export default function ReportarScreen() {
     }
   };
 
-  // Puxar para atualizar: envia os pendentes e depois recarrega os relatos da área.
   const atualizar = async () => {
     await sincronizar();
     vizinhos.recarregar();
@@ -161,7 +154,6 @@ export default function ReportarScreen() {
         ) : null}
       </Cartao>
 
-      {/* O aviso "será enviado quando a internet voltar" some quando ela volta. */}
       {retorno && !(retorno.tipo === 'info' && online && retorno.texto.startsWith('Sem internet')) ? (
         <Aviso tipo={retorno.tipo} texto={retorno.texto} />
       ) : null}
@@ -241,10 +233,6 @@ export default function ReportarScreen() {
   );
 }
 
-/**
- * Usa o GPS quando ele está dentro da área escolhida;
- * senão (sem permissão, sem sinal ou longe dali), usa o centro da área (fallback da C3.3).
- */
 function escolherLocal(area: Area | undefined, gps: Coordenadas | null): Coordenadas | null {
   if (!area) return null;
   if (gps && distanciaMetros(gps.latitude, gps.longitude, area.latitude, area.longitude) <= area.raioMetros) {

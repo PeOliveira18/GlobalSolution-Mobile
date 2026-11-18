@@ -12,10 +12,6 @@ export type PontoDePartida = Coordenadas & {
   nomeArea: string;
 };
 
-/**
- * De onde medir a distância até os abrigos: a localização do celular, se ela estiver
- * dentro da área do morador; senão, o centro da área (fallback da C3.3).
- */
 export function usePontoDePartida() {
   const { areaId } = useMorador();
 

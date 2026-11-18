@@ -8,10 +8,6 @@ import { ProvedorDadosLocais } from '@/contexts/dados-locais';
 import { useTema } from '@/contexts/tema';
 import { inicializarBanco, NOME_BANCO } from '@/db/esquema';
 
-/**
- * Layout raiz (C3.3): banco SQLite → conexão (netinfo) → dados locais (tema + morador).
- * O `onInit` cria as tabelas antes de qualquer tela ler o banco.
- */
 export default function RootLayout() {
   return (
     <SQLiteProvider databaseName={NOME_BANCO} onInit={inicializarBanco}>
@@ -33,7 +29,6 @@ function NavegacaoRaiz() {
       <Stack
         screenOptions={{
           headerStyle: { backgroundColor: cores.fundo },
-          // Cabeçalho da mesma cor da tela, sem a linha embaixo (estilo iOS).
           headerShadowVisible: false,
           headerTintColor: cores.primaria,
           headerTitleStyle: { color: cores.texto, fontWeight: '700' },
@@ -41,7 +36,6 @@ function NavegacaoRaiz() {
           contentStyle: { backgroundColor: cores.fundo },
         }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        {/* Sem cabeçalho nem voltar: a escolha da área é obrigatória na 1ª abertura. "Boas-vindas" aparece na tela. */}
         <Stack.Screen
           name="onboarding"
           options={{

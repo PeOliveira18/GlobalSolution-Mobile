@@ -1,8 +1,3 @@
-/**
- * Textos e ícones mostrados ao morador para cada valor dos contratos.
- * Linguagem simples, sem jargão técnico (C3.5).
- */
-
 import type { SymbolViewProps } from 'expo-symbols';
 
 import type { Faixa, Severidade, StatusOcorrencia, TipoAlerta, TipoOcorrencia } from '@/types';
@@ -32,7 +27,6 @@ export const TIPOS_OCORRENCIA: Record<TipoOcorrencia, Visual & { dica: string }>
   },
 };
 
-/** A severidade usa as mesmas cores e ícones das faixas do córrego. */
 export const SEVERIDADES: Record<Severidade, { rotulo: string; faixaVisual: Faixa }> = {
   BAIXA: { rotulo: 'Aviso', faixaVisual: 'ATENCAO' },
   MEDIA: { rotulo: 'Atenção', faixaVisual: 'ATENCAO' },

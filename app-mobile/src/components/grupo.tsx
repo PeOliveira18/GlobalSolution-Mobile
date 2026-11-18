@@ -9,17 +9,11 @@ import { Icone } from './icone';
 import { Texto } from './texto';
 
 type GrupoProps = {
-  /** Título da seção, acima do cartão (lido como cabeçalho). */
   titulo?: string;
-  /** Observação curta abaixo do cartão. */
   rodape?: string;
   children: ReactNode;
 };
 
-/**
- * Seção agrupada no estilo dos Ajustes do iPhone: título pequeno, um único cartão
- * com as linhas separadas por um fio fino e, se houver, uma observação embaixo.
- */
 export function Grupo({ titulo, rodape, children }: GrupoProps) {
   const { cores } = useTema();
   const linhas = Children.toArray(children).filter(Boolean);
@@ -32,7 +26,6 @@ export function Grupo({ titulo, rodape, children }: GrupoProps) {
           styles.cartao,
           { borderColor: cores.bordaSuave, backgroundColor: cores.superficie, boxShadow: cores.sombra ?? undefined },
         ]}>
-        {/* Recorta o fundo das linhas tocadas nos cantos arredondados (a sombra fica no cartão de fora). */}
         <View style={styles.recorte}>
           {linhas.map((linha, i) => (
             <Fragment key={i}>
@@ -51,10 +44,6 @@ export function Grupo({ titulo, rodape, children }: GrupoProps) {
   );
 }
 
-/**
- * Título pequeno de uma seção agrupada. A caixa alta é só visual (textTransform):
- * o leitor de tela lê o texto normal, sem soletrar.
- */
 export function TituloGrupo({ texto }: { texto: string }) {
   const { cores } = useTema();
   return (
@@ -70,7 +59,6 @@ type QuadradoIconeProps = {
   fundo?: string;
 };
 
-/** Ícone num quadrado de cantos arredondados, como nos Ajustes do iPhone. */
 export function QuadradoIcone({ icone, cor, fundo }: QuadradoIconeProps) {
   const { cores, tamanho, preferencias } = useTema();
   const corIcone = cor ?? cores.primaria;
@@ -85,7 +73,6 @@ export function QuadradoIcone({ icone, cor, fundo }: QuadradoIconeProps) {
           width: lado,
           height: lado,
           backgroundColor: fundoIcone,
-          // No alto contraste o fundo some no preto: a borda colorida desenha o quadrado.
           borderColor: preferencias.altoContraste ? corIcone : fundoIcone,
         },
       ]}>
@@ -99,13 +86,10 @@ type LinhaInfoProps = {
   corIcone?: string;
   fundoIcone?: string;
   rotulo: string;
-  /** Conteúdo à direita (ex.: "Sim"). */
   valor?: ReactNode;
-  /** Como o leitor de tela lê a linha inteira. */
   rotuloAcessivel?: string;
 };
 
-/** Linha de informação dentro de um `Grupo`: ícone, texto e, opcionalmente, um valor à direita. */
 export function LinhaInfo({ icone, corIcone, fundoIcone, rotulo, valor, rotuloAcessivel }: LinhaInfoProps) {
   return (
     <View accessible accessibilityLabel={rotuloAcessivel ?? rotulo} style={styles.linha}>
@@ -121,11 +105,9 @@ type LinhaAcaoProps = {
   rotulo: string;
   dica: string;
   aoPressionar: () => void;
-  /** Ação que apaga dados: texto e ícone na cor de perigo. */
   perigo?: boolean;
 };
 
-/** Linha tocável dentro de um `Grupo` (ex.: "Limpar dados locais"). Alvo de toque ≥ 48. */
 export function LinhaAcao({ icone, rotulo, dica, aoPressionar, perigo }: LinhaAcaoProps) {
   const { cores } = useTema();
   const cor = perigo ? cores.perigo : cores.primaria;
@@ -166,7 +148,6 @@ const styles = StyleSheet.create({
   },
   divisor: {
     height: StyleSheet.hairlineWidth,
-    // Recuado como no iOS: o fio começa depois do ícone.
     marginLeft: Espaco.md,
   },
   rodape: {

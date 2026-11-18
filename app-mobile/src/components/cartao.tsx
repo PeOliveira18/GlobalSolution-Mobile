@@ -7,16 +7,11 @@ import { useTema } from '@/contexts/tema';
 type CartaoProps = {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
-  /** Se informado, o cartão inteiro vira um botão (precisa de `rotulo` e `dica`). */
   aoPressionar?: () => void;
   rotulo?: string;
   dica?: string;
 };
 
-/**
- * Caixa branca com contorno suave e sombra (no alto contraste: borda branca, sem sombra).
- * Quando tocável, é lida como um único botão pelo leitor de tela.
- */
 export function Cartao({ children, style, aoPressionar, rotulo, dica }: CartaoProps) {
   const { cores } = useTema();
   const base = [

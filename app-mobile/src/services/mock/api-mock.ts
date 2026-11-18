@@ -21,21 +21,10 @@ import ocorrenciasJson from './ocorrencias.json';
 import sensoresJson from './sensores.json';
 import statusJson from './status-sensores.json';
 
-/**
- * API de mentira para o app funcionar sem os backends (C3.4).
- *
- * Começa com os JSONs desta pasta (dados da B4) e guarda as mudanças em memória
- * enquanto o app estiver aberto. As regras imitam o Serviço do Cidadão:
- * idempotência por idLocalApp, confirmação na 2ª vez, alerta comunitário com
- * 3 relatos em 60 min, abrigos só com vaga e 409 sem vaga.
- */
-
 const LATENCIA_MS = 300;
 const JANELA_COMUNITARIA_MS = 60 * 60 * 1000;
 const MINIMO_RELATOS_COMUNITARIO = 3;
 
-// Os JSONs são importados como tipos largos (string); aqui afirmamos o formato do contrato.
-// A cópia evita que a tela altere o "banco" sem querer ao mexer no objeto recebido.
 const copiar = <T>(valor: unknown): T =>
   valor === undefined ? (undefined as T) : (JSON.parse(JSON.stringify(valor)) as T);
 
@@ -51,10 +40,6 @@ const banco = {
 
 trazerDatasParaAgora();
 
-/**
- * As datas dos JSONs são fixas (15/11/2026). Para o app parecer "ao vivo",
- * todas são deslocadas juntas, de modo que o dado mais recente seja de 5 minutos atrás.
- */
 function trazerDatasParaAgora() {
   const campos: { lista: Record<string, unknown>[]; chaves: string[] }[] = [
     { lista: banco.alertas, chaves: ['criadoEm', 'encerradoEm'] },
@@ -76,8 +61,6 @@ function trazerDatasParaAgora() {
           item[chave] = paraIsoSaoPaulo(new Date(Date.parse(item[chave]) + deslocamento));
 }
 
-// ---------- ajudantes ----------
-
 const esperar = <T>(valor: T): Promise<T> =>
   new Promise((resolve) => setTimeout(() => resolve(copiar<T>(valor)), LATENCIA_MS));
 
@@ -91,7 +74,6 @@ const proximoId = (lista: { id: number }[]) => Math.max(0, ...lista.map((i) => i
 
 const agoraIso = () => paraIsoSaoPaulo(new Date());
 
-/** Mesma máscara do ISanitizadorPii do Serviço do Cidadão (C1.5). */
 function sanitizar(texto: string): string {
   return texto
     .replace(/\b\d{3}\.?\d{3}\.?\d{3}-?(\d{2})\b/g, '***.***.***-$1')
@@ -105,7 +87,6 @@ function areaDoPonto(lat: number, lon: number): Area | undefined {
     .sort((a, b) => a.distancia - b.distancia)[0]?.area;
 }
 
-/** Regra do alerta comunitário (C1.5): 3+ relatos não resolvidos na área em 60 min. */
 function avaliarAlertaComunitario(area: Area) {
   const ativo = banco.alertas.find(
     (a) => a.tipo === 'COMUNITARIO' && a.ativo && a.areaRiscoId === area.id,
@@ -150,8 +131,6 @@ function avaliarAlertaComunitario(area: Area) {
     janelaHoras: null,
   });
 }
-
-// ---------- implementação ----------
 
 const apiMockBase: ApiOlhoDagua = {
   listarAreas: () => esperar(banco.areas),
@@ -232,7 +211,6 @@ const apiMockBase: ApiOlhoDagua = {
       areaRiscoId: area.id,
       tipo: relato.tipo,
       descricao: relato.descricao ? sanitizar(relato.descricao) : null,
-      // A API devolve a coordenada arredondada (~100 m), para proteger o morador.
       latitude: Math.round(relato.latitude * 1000) / 1000,
       longitude: Math.round(relato.longitude * 1000) / 1000,
       status: 'ABERTA',
@@ -334,10 +312,6 @@ const apiMockBase: ApiOlhoDagua = {
   },
 };
 
-/**
- * Sem internet (segundo o netinfo), o mock falha como um servidor fora do ar,
- * antes de mudar qualquer dado. Assim a fila offline pode ser testada no modo mock.
- */
 export const apiMock = Object.fromEntries(
   Object.entries(apiMockBase).map(([nome, metodo]) => [
     nome,

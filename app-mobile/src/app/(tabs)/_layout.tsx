@@ -15,11 +15,9 @@ type Aba = {
   titulo: string;
   dica: string;
   icone: SymbolViewProps['name'];
-  /** Versão cheia do ícone, usada na aba ativa (no iOS). */
   iconeAtivo: SymbolViewProps['name'];
 };
 
-/** As 4 abas da C3.3, sempre com ícone + texto. */
 const ABAS: Aba[] = [
   {
     rota: 'index',
@@ -57,15 +55,11 @@ export default function TabsLayout() {
   const { cores, tamanho } = useTema();
   const { areaId } = useMorador();
 
-  // Na 1ª abertura (sem área escolhida), o morador vai primeiro para o onboarding.
   if (areaId == null) return <Redirect href="/onboarding" />;
 
-  // Altura justa para a pílula do ícone (32) + o rótulo + o respiro do item (5 em cima e 5 embaixo).
-  // Cresce junto com a letra (fonte grande e fontScale do sistema), sem cortar o texto.
   const tamanhoRotulo = tamanho(14);
   const alturaRotulo = Math.ceil(tamanhoRotulo * fontScale * 1.3);
   const alturaBarra = Math.max(ALVO_TOQUE_MINIMO + Espaco.sm, 32 + alturaRotulo + 10 + Espaco.xs);
-  // Aproxima os rótulos da borda de baixo, como a barra de abas do iOS, sem chegar no indicador de início.
   const margemInferior = Math.max(Espaco.xs, Math.round(insets.bottom * 0.65));
 
   return (
@@ -95,7 +89,6 @@ export default function TabsLayout() {
           options={{
             title: aba.titulo,
             tabBarAccessibilityLabel: aba.titulo,
-            // A aba ativa ganha uma pílula atrás do ícone e o ícone cheio, para não depender só da cor.
             tabBarIcon: ({ color, focused }) => (
               <View
                 style={[
@@ -105,7 +98,6 @@ export default function TabsLayout() {
                 <Icone nome={focused ? aba.iconeAtivo : aba.icone} cor={color} tamanho={22} />
               </View>
             ),
-            // O botão padrão já tem role "tab" e o estado "selecionado"; aqui só somamos a dica.
             tabBarButton: (props) => <PlatformPressable {...props} accessibilityHint={aba.dica} />,
           }}
         />

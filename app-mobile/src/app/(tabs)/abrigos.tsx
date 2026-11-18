@@ -19,7 +19,6 @@ import { api } from '@/services/api';
 import type { AbrigoProximo } from '@/types';
 import { formatarDistancia } from '@/utils/formatar';
 
-/** ABRIGOS (C3.3): "Para onde eu vou?" — abrigos com vaga, do mais perto ao mais longe. */
 export default function AbrigosScreen() {
   const [soAcessiveis, setSoAcessiveis] = useState(false);
   const ponto = usePontoDePartida();
@@ -89,7 +88,6 @@ function ItemAbrigo({ abrigo, maisPerto }: { abrigo: AbrigoProximo; maisPerto: b
   const { fontScale } = useWindowDimensions();
   const distancia = formatarDistancia(abrigo.distanciaMetros);
   const verde = cores.faixas.NORMAL;
-  // Com letra grande os dois números não cabem lado a lado: um embaixo do outro, com a legenda ao lado.
   const empilhado = preferencias.fonteGrande || fontScale > 1.15;
 
   return (
@@ -118,7 +116,6 @@ function ItemAbrigo({ abrigo, maisPerto }: { abrigo: AbrigoProximo; maisPerto: b
         <Icone nome={{ ios: 'chevron.right', android: 'chevron_right', web: 'chevron_right' }} cor={cores.textoSecundario} tamanho={20} />
       </View>
 
-      {/* Os dois números que importam na hora de sair de casa: vagas e distância. */}
       <View style={[styles.numeros, empilhado && { flexDirection: 'column', gap: Espaco.sm }]}>
         <Numero
           empilhado={empilhado}
@@ -148,7 +145,6 @@ function ItemAbrigo({ abrigo, maisPerto }: { abrigo: AbrigoProximo; maisPerto: b
   );
 }
 
-/** Número em destaque com ícone num quadrado colorido e a legenda embaixo. */
 function Numero({
   icone,
   cor,

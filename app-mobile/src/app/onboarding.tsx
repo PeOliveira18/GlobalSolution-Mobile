@@ -14,10 +14,6 @@ import { Espaco, Fonte, Raio } from '@/constants/theme';
 import { useMorador } from '@/contexts/morador';
 import { useTema } from '@/contexts/tema';
 
-/**
- * 1ª abertura (C3.3): o morador escolhe a área e as preferências de acessibilidade,
- * e o celular é inscrito de forma anônima (POST /api/inscricoes).
- */
 export default function OnboardingScreen() {
   const { cores, tamanho, preferencias, definirFonteGrande, definirAltoContraste } = useTema();
   const { areaId, inscrever } = useMorador();
@@ -27,7 +23,6 @@ export default function OnboardingScreen() {
   const comecar = async () => {
     if (escolhida == null) return;
     setSalvando(true);
-    // Mesmo sem servidor a escolha vale no celular; a inscrição é refeita na próxima mudança.
     await inscrever(escolhida, preferencias);
     setSalvando(false);
     router.replace('/');
@@ -38,9 +33,7 @@ export default function OnboardingScreen() {
 
   return (
     <Tela margemSegura>
-      {/* Boas-vindas: marca do app, o que ele faz e o aviso de privacidade. */}
       <View style={styles.topo}>
-        {/* Decorativa: o nome do app vem logo abaixo, em texto. */}
         <Image
           source={require('@/assets/images/icon.png')}
           style={[styles.icone, preferencias.altoContraste && { borderWidth: 2, borderColor: cores.borda }]}
@@ -59,7 +52,6 @@ export default function OnboardingScreen() {
         <Texto style={{ textAlign: 'center' }}>
           Avisamos quando o córrego perto da sua casa começar a subir, mostramos o que fazer e para onde ir.
         </Texto>
-        {/* No alto contraste o fundo fica preto, e a borda verde marca o aviso. */}
         <View
           style={[
             styles.privacidade,

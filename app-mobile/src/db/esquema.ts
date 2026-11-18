@@ -1,15 +1,9 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-/** Nome do arquivo do banco no celular. */
 export const NOME_BANCO = 'olhodagua.db';
 
 const VERSAO_ATUAL = 1;
 
-/**
- * Cria as tabelas da C3.4 do PLANO.md na primeira abertura do app.
- * A versão do esquema fica no `PRAGMA user_version`: em uma mudança futura,
- * basta somar um bloco `if (versao < 2) { ... }` sem apagar os dados do morador.
- */
 export async function inicializarBanco(db: SQLiteDatabase): Promise<void> {
   const linha = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
   const versao = linha?.user_version ?? 0;

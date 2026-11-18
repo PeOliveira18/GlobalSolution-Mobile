@@ -9,18 +9,15 @@ import { Texto } from './texto';
 
 type BotaoProps = {
   rotulo: string;
-  /** O que acontece ao tocar (lido pelo leitor de tela depois do nome). */
   dica: string;
   aoPressionar: () => void;
   variante?: 'primario' | 'secundario' | 'perigo';
   icone?: SymbolViewProps['name'];
   desabilitado?: boolean;
   carregando?: boolean;
-  /** Botão maior, para a ação principal da tela. */
   grande?: boolean;
 };
 
-/** Botão com alvo de toque ≥ 48 dp, ícone + texto e acessibilidade completa (C3.5). */
 export function Botao({
   rotulo,
   dica,
@@ -37,7 +34,6 @@ export function Botao({
   const fundo =
     variante === 'primario' ? cores.primaria : variante === 'perigo' ? cores.perigo : cores.secundarioFundo;
   const corTexto = variante === 'secundario' ? cores.primaria : cores.sobrePrimaria;
-  // No alto contraste o secundário é preto com borda amarela; na paleta padrão, azul-claro sem borda visível.
   const borda = variante === 'secundario' ? cores.secundarioBorda : fundo;
 
   return (

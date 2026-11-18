@@ -7,7 +7,6 @@ type Variante = 'titulo' | 'subtitulo' | 'corpo' | 'legenda';
 
 type TextoProps = TextProps & {
   variante?: Variante;
-  /** `secundario` usa a cor de texto mais suave da paleta (ainda com contraste AA). */
   tom?: 'normal' | 'secundario';
   negrito?: boolean;
 };
@@ -19,10 +18,6 @@ const PESO: Record<Variante, '400' | '700'> = {
   legenda: '400',
 };
 
-/**
- * Texto do app: já aplica a cor da paleta e a preferência "fonte grande".
- * O fontScale do sistema continua valendo, porque `allowFontScaling` fica ligado (padrão).
- */
 export function Texto({ variante = 'corpo', tom = 'normal', negrito, style, ...resto }: TextoProps) {
   const { cores, tamanho } = useTema();
   const fontSize = tamanho(Fonte[variante]);

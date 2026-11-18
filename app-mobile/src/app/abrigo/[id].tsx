@@ -17,7 +17,6 @@ import { api } from '@/services/api';
 import type { Abrigo } from '@/types';
 import { formatarDistancia } from '@/utils/formatar';
 
-/** DETALHE DO ABRIGO (C3.3): endereço, vagas (com a barra de ocupação) e o botão "Como chegar". */
 export default function AbrigoScreen() {
   const { id, distancia } = useLocalSearchParams<{ id: string; distancia?: string }>();
   const carregar = useCallback(() => api.obterAbrigo(Number(id)), [id]);
@@ -47,7 +46,6 @@ function DetalheAbrigo({ abrigo, distancia }: { abrigo: Abrigo; distancia: numbe
   const verde = cores.faixas.NORMAL;
   const corVagas = comVaga ? verde.cor : cores.perigo;
   const tamanhoNumero = tamanho(Fonte.destaque);
-  // Parte ocupada da barra (0 a 1). Só visual: o texto ao lado diz os mesmos números.
   const fracao = abrigo.capacidade > 0 ? Math.min(1, Math.max(0, abrigo.ocupacao / abrigo.capacidade)) : 1;
   const sim = { ios: 'checkmark.circle.fill', android: 'check_circle', web: 'check_circle' } as const;
   const nao = { ios: 'xmark.circle', android: 'cancel', web: 'cancel' } as const;
@@ -105,7 +103,6 @@ function DetalheAbrigo({ abrigo, distancia }: { abrigo: Abrigo; distancia: numbe
               </Texto>
             </View>
           )}
-          {/* Barra de ocupação: no alto contraste o trilho ganha borda branca. */}
           <View
             style={[
               styles.trilho,
@@ -154,7 +151,6 @@ function DetalheAbrigo({ abrigo, distancia }: { abrigo: Abrigo; distancia: numbe
   );
 }
 
-/** Abre o app de mapas do celular (Apple Mapas, Google Maps) ou o Google Maps no navegador. */
 async function abrirMapa(abrigo: Abrigo) {
   const destino = `${abrigo.latitude},${abrigo.longitude}`;
   const web = `https://www.google.com/maps/dir/?api=1&destination=${destino}`;

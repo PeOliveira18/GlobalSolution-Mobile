@@ -20,27 +20,18 @@ import { paraIsoSaoPaulo } from '@/utils/datas';
 
 type Nivel = { area: AreaDetalhe; status: StatusAtualSensor | null };
 
-/** O que fica guardado na tabela `cache_status` para mostrar sem internet. */
 type CacheInicio = { nivel?: Nivel; alertas?: Alerta[] };
 
-/** Cada parte da tela: os dados ou a mensagem de erro. */
 type Parte<T> = { dados?: T; erro?: string };
 
 type DadosInicio = { nivel: Parte<Nivel>; alertas: Parte<Alerta[]>; dadosDe: string | null };
 
-/**
- * INÍCIO (C3.3): "Vai alagar na minha rua?"
- * Nível do córrego da área (Telemetria), alertas ativos (Cidadão) e o atalho para reportar.
- * Sem internet, mostra o que foi guardado no SQLite na última vez que deu certo.
- */
 export default function InicioScreen() {
   const db = useSQLiteContext();
   const { areaId, sincronizar } = useMorador();
   const { online } = useConexao();
 
-  // `online` está nas dependências: quando a internet cai ou volta, a tela busca de novo.
   const carregar = useCallback(async (): Promise<DadosInicio> => {
-    // Nível e alertas vêm de serviços diferentes: se um cair, o outro continua aparecendo.
     const [nivel, alertas] = await Promise.allSettled([
       buscarNivel(areaId!),
       api.listarAlertas({ areaId: areaId!, ativos: true }),
@@ -52,7 +43,6 @@ export default function InicioScreen() {
       return { nivel: { dados: nivel.value }, alertas: { dados: alertas.value }, dadosDe: null };
     }
 
-    // Alguma parte falhou por falta de conexão ou erro do servidor: completa com o que está guardado no celular.
     const falhaPassageira = [nivel, alertas].some(
       (r) => r.status === 'rejected' && r.reason instanceof ErroApi && r.reason.temporario,
     );
@@ -70,22 +60,20 @@ export default function InicioScreen() {
       alertas: parte(alertas, cache?.dados.alertas),
       dadosDe: cache?.atualizadoEm ?? null,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, areaId, online]);
+  }, [db, areaId]);
 
-  const tela = useCarregar(carregar);
+  const tela = useCarregar(carregar, online);
+  const { recarregar } = tela;
   const nivel = tela.dados?.nivel;
   const alertas = tela.dados?.alertas;
 
   useAnunciarAlertasNovos(alertas?.dados);
 
-  // Puxar para atualizar: envia relatos pendentes e busca tudo de novo.
   const atualizar = () => {
     sincronizar();
     tela.recarregar();
   };
 
-  // Ao voltar para esta aba (ex.: depois de reportar), busca os dados de novo.
   const primeiraVez = useRef(true);
   useFocusEffect(
     useCallback(() => {
@@ -93,9 +81,8 @@ export default function InicioScreen() {
         primeiraVez.current = false;
         return;
       }
-      tela.recarregar();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+      recarregar();
+    }, [recarregar]),
   );
 
   return (
@@ -145,7 +132,6 @@ export default function InicioScreen() {
   );
 }
 
-/** Área + status do sensor de nível dela (contrato ④ da Telemetria). */
 async function buscarNivel(areaId: number): Promise<Nivel> {
   const [area, sensores] = await Promise.all([api.obterArea(areaId), api.listarSensores(areaId)]);
   const sensorNivel = sensores.find((s) => s.tipo === 'NIVEL');
@@ -153,10 +139,6 @@ async function buscarNivel(areaId: number): Promise<Nivel> {
   return { area, status };
 }
 
-/**
- * C3.5: quando chega um alerta novo (ao atualizar), o leitor de tela fala a mensagem,
- * mesmo que o morador não esteja olhando para a lista.
- */
 function useAnunciarAlertasNovos(alertas: { id: number; mensagem: string }[] | undefined) {
   const conhecidos = useRef<Set<number> | null>(null);
 
