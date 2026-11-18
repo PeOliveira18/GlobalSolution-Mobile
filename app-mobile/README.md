@@ -170,7 +170,7 @@ O `idLocalApp` do relato garante que reenviar não cria duplicata no servidor. S
 | **Banco de dados** | expo-sqlite em [`src/db/`](src/db): tabelas `preferencias`, `relatos` e `cache_status`, com versão de esquema; fila offline e sincronização em [`contexts/morador.tsx`](src/contexts/morador.tsx) |
 | **Acessibilidade** | Seção acima: [`components/`](src/components) com nome, papel e dica; [`contexts/tema.tsx`](src/contexts/tema.tsx) e [`constants/theme.ts`](src/constants/theme.ts) com letra grande, alto contraste e faixas com cor + ícone + texto |
 | **Aderência ao problema** | A jornada da Ficha ponta a ponta, o passo a passo de enchente em [`constants/orientacoes.ts`](src/constants/orientacoes.ts) e o relato que funciona sem internet (quando chove forte, a rede costuma cair) |
-| **Documentação** | Este README, o roteiro do vídeo e o registro de IA em [`prompts.md`](../prompts.md) |
+| **Documentação** | Este README e o roteiro do vídeo |
 
 ## Dados
 

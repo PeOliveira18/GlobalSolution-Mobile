@@ -36,7 +36,6 @@ flowchart LR
 
 **Por que dois serviços:** cada um tem uma responsabilidade clara. A Telemetria só conversa com hardware (muitas leituras, regras de limite). O serviço do Cidadão conversa com pessoas (alertas, relatos, abrigos). Eles se integram por REST: é a parte "orientada a serviços" da entrega de SOA, e deixa as entregas de SOA e C# separadas.
 
-<!-- ESTE-REPO:INICIO -->
 ## Este repositório: Mobile Development & IOT
 
 Entrega da disciplina **Mobile Development & IOT**: o **app do morador**, em Expo com React Native, TypeScript e Expo Router. Ele mostra o nível do córrego e os alertas da área do morador, recebe relatos de alagamento (salvos no SQLite do celular para funcionar sem internet) e indica os abrigos mais próximos com vaga.
@@ -44,7 +43,6 @@ Entrega da disciplina **Mobile Development & IOT**: o **app do morador**, em Exp
 ```
 GlobalSolution-Mobile/
 ├── README.md     ← esta Ficha
-├── prompts.md    ← registro do uso de IA
 └── app-mobile/   ← código do app (instruções completas, todos os prints e o roteiro do vídeo no README da pasta)
 ```
 
@@ -70,7 +68,6 @@ npx expo start
 ```
 
 Leia o QR code com o **Expo Go** (SDK 58). Para ligar nas APIs reais, veja [app-mobile/README.md](app-mobile/README.md#modo-mock--api-real).
-<!-- ESTE-REPO:FIM -->
 
 ## Repositórios do projeto
 
