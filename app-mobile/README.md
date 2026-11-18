@@ -4,7 +4,7 @@ App em Expo (React Native + TypeScript + Expo Router) da disciplina **Mobile Dev
 
 É a porta de entrada do morador no Olho d'Água e responde à jornada da Ficha: *"Vai alagar na minha rua? O que eu faço? Para onde eu vou? Como eu aviso os vizinhos?"*. Consome as APIs do Serviço do Cidadão (C#) e do Serviço de Telemetria (Java), ou um mock com os mesmos contratos; guarda os dados no **SQLite** do celular; e funciona **sem internet**.
 
-**🎬 Vídeo do app rodando (até 3 min):** *a definir* · roteiro em [docs/roteiro-video.md](docs/roteiro-video.md)
+**🎬 Vídeo do app rodando (2min26s):** [docs/video-app.mp4](docs/video-app.mp4) · roteiro em [docs/roteiro-video.md](docs/roteiro-video.md)
 
 ## Telas
 

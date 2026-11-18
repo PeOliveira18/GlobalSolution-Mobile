@@ -48,7 +48,7 @@ GlobalSolution-Mobile/
 └── app-mobile/   ← código do app (instruções completas, todos os prints e o roteiro do vídeo no README da pasta)
 ```
 
-**🎬 Vídeo do app rodando (até 3 min):** *a definir*
+**🎬 Vídeo do app rodando (2min26s):** [app-mobile/docs/video-app.mp4](app-mobile/docs/video-app.mp4)
 
 <table>
   <tr>
@@ -84,7 +84,7 @@ Leia o QR code com o **Expo Go** (SDK 58). Para ligar nas APIs reais, veja [app-
 
 | Disciplina | Link |
 |---|---|
-| Vídeo do app (Mobile) | *a definir* |
+| Vídeo do app (Mobile) | [app-mobile/docs/video-app.mp4](app-mobile/docs/video-app.mp4) |
 | Projeto Wokwi (IoT) | *a definir* |
 | Vídeo IoT | *a definir* |
 | Vídeo ML | *a definir* |

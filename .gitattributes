@@ -14,3 +14,5 @@ mvnw text eol=lf
 # Scripts do Windows
 *.cmd text eol=crlf
 *.bat text eol=crlf
+
+*.mp4 binary
