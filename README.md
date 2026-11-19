@@ -46,7 +46,7 @@ GlobalSolution-Mobile/
 └── app-mobile/   ← código do app (instruções completas, todos os prints e o roteiro do vídeo no README da pasta)
 ```
 
-**🎬 Vídeo do app rodando (2min26s):** [app-mobile/docs/video-app.mp4](app-mobile/docs/video-app.mp4)
+**🎬 Vídeo do app rodando (2min26s):** https://youtube.com/shorts/bjF2RS14oQQ · cópia no repositório: [app-mobile/docs/video-app.mp4](app-mobile/docs/video-app.mp4)
 
 <table>
   <tr>
