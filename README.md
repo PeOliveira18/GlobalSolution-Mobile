@@ -22,11 +22,11 @@
 flowchart LR
     ESP[ESP32 no Wokwi<br/>sensor de nível + chuva] -- POST /api/leituras --> TEL
     subgraph SOA [Serviço de Telemetria · Java Spring Boot]
-      TEL[API Telemetria] --> PGT[(PostgreSQL<br/>telemetria)]
+      TEL[API Telemetria] --> ORT[(Oracle 19c FIAP<br/>tabelas OT_)]
     end
     TEL -- "nível cruzou limite<br/>POST /api/alertas/sensor" --> CID
     subgraph CS [Serviço do Cidadão · C# .NET]
-      CID[API Cidadão] --> PGC[(PostgreSQL<br/>cidadao)]
+      CID[API Cidadão] --> ORA[(Oracle 19c FIAP<br/>tabelas OD_)]
     end
     APP[App Expo<br/>React Native + TS] -- alertas, abrigos, relatos --> CID
     APP -- nível atual do córrego --> TEL
